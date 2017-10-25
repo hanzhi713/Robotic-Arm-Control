@@ -13,12 +13,12 @@ import math
 # l1 = Symbol('l1')
 # A = Symbol('A')
 
-a = 30
+arm = 30
 b = 0
 l1 = 10
 l2 = 10
 l3 = 10
-A = a ** 2 + b ** 2 + l1 ** 2 - l2 ** 2 - l3 ** 2
+A = arm ** 2 + b ** 2 + l1 ** 2 - l2 ** 2 - l3 ** 2
 m = Symbol('m')
 # print(simplify(solve([(m - i) ** 2 + (n - j) ** 2 - l1 ** 2, (a - i) ** 2 + (b - j) ** 2 - l2 ** 2], [i, j])))
 
@@ -31,5 +31,5 @@ m = Symbol('m')
 #     4 * a ** 2 + 4 * b ** 2 - 2 * A) * m ** 2 - 4 * a * A * m - 4 * b ** 2 * l1 ** 2 + A ** 2, m, domain='ZZ'),
 # #                       '>='))
 
-print(np.roots([1, -4 * a, 4 * a ** 2 + 4 * b ** 2 + 2 * A, - 4 * a * A, - 4 * b ** 2 * l1 ** 2 + A ** 2]))
-print(solve(m**4 -4 * a*m**3+ (4 * a ** 2 + 4 * b ** 2 + 2 * A)*m**2 - 4 * a * A*m - 4 * b ** 2 * l1 ** 2 + A ** 2, m))
+print(np.roots([1, -4 * arm, 4 * arm ** 2 + 4 * b ** 2 + 2 * A, - 4 * arm * A, - 4 * b ** 2 * l1 ** 2 + A ** 2]))
+print(solve(m ** 4 - 4 * arm * m ** 3 + (4 * arm ** 2 + 4 * b ** 2 + 2 * A) * m ** 2 - 4 * arm * A * m - 4 * b ** 2 * l1 ** 2 + A ** 2, m))
