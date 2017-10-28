@@ -6,11 +6,18 @@ from Protocol import ServoProtocol
 
 half_pi = pi / 2
 
+
 class Arm:
     steps = 100
     default_position = [90, 90, 90, 90, 90, 45]
-    default_optimization = lambda d1, d2, d3, p: abs(d1) + abs(d2) + abs(d3)
-    minimum_change = lambda d1, d2, d3, p: (90 - degrees(d1) - p[1]) ** 2 + (90 - degrees(d2) - p[2]) ** 2 + (90 - degrees(d3) - p[3]) ** 2
+
+    @staticmethod
+    def default_optimization(d1, d2, d3, p):
+        return abs(d1) + abs(d2) + abs(d3)
+
+    @staticmethod
+    def minimum_change(d1, d2, d3, p):
+        return (90 - degrees(d1) - p[1]) ** 2 + (90 - degrees(d2) - p[2]) ** 2 + (90 - degrees(d3) - p[3]) ** 2
 
     def __init__(self, l1, l2, l3, opt=default_optimization):
         self.l1 = l1
@@ -24,9 +31,12 @@ class Arm:
     def get_radians(self, x, y, z):
         distance = sqrt(x ** 2 + y ** 2 + z ** 2)
         if distance > self.len:
-            raise Exception("Too far to reach")
+            raise Exception("Too far to reach!")
 
         d0 = atan2(y, x)
+        # if not pi * 0.75 < d0 < -pi * 0.25:
+        #     raise Exception("Out of range!")
+
         d1, d2, d3 = self.solve_three(sqrt(x ** 2 + y ** 2), z)
         return d0, d1, d2, d3
 
@@ -116,15 +126,15 @@ class Arm:
 def callback(e):
     global arm, x, y, z, sr, write_serial
     arm.goto(x, y, z)
-    xyz = arm.get_coordinates()
+    xs, ys, zs = arm.get_coordinates()
     ax.clear()
     ax.set_xlabel('X / mm')
-    ax.set_xlim(-200, 200)
+    ax.set_xlim(-20, 200)
     ax.set_ylabel('Y / mm')
-    ax.set_ylim(-200, 200)
+    ax.set_ylim(-20, 200)
     ax.set_zlabel('Z / mm')
     ax.set_zlim(0, 200)
-    ax.plot(xyz[0], xyz[1], xyz[2], linewidth=2.5, marker='*', markersize=8, markerfacecolor='y')
+    ax.plot(xs, ys, zs, linewidth=2.5, marker='*', markersize=8, markerfacecolor='y')
     ax.scatter(x, y, z, c='r', s=100, marker='o')
     if write_serial:
         arm.write(sr)
@@ -140,7 +150,8 @@ def update(n, t):
         z = int(t)
     callback(1)
 
-write_serial = False
+
+write_serial = True
 if write_serial:
     sr = ServoProtocol('COM3')
 
@@ -156,9 +167,10 @@ z = 150
 
 root = Tk()
 root.title('Robotic Arm Control Simulation')
+
 sx = Scale(root, from_=-100, to_=300, orient=HORIZONTAL, length=600, command=lambda t: update(1, t))
 sy = Scale(root, from_=-100, to_=300, orient=HORIZONTAL, length=600, command=lambda t: update(2, t))
-sz = Scale(root, from_=-50, to_=300, orient=HORIZONTAL, length=600, command=lambda t: update(3, t))
+sz = Scale(root, from_=-100, to_=300, orient=HORIZONTAL, length=600, command=lambda t: update(3, t))
 # sx.bind('<ButtonRelease-1>', callback)
 # sy.bind('<ButtonRelease-1>', callback)
 # sz.bind('<ButtonRelease-1>', callback)
