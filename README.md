@@ -4,6 +4,6 @@
 
 Remember to adjust the length of each link when instantiating the Arm object
 
-![slider](slider.PNG)
+![slider](demo/slider.PNG)
 
-![graph](graph.PNG)
+![graph](demo/graph.PNG)
