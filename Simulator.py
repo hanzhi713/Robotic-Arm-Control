@@ -2,34 +2,49 @@ from math import *
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 from tkinter import *
-from Protocol import ServoProtocol
+import numpy as np
+from numpy.linalg import norm
 
 half_pi = pi / 2
 
 
 class Arm:
     steps = 100
-    default_position = [90, 90, 90, 90, 90, 45]
+    default_position = np.array([90, 90, 90, 90, 90, 45], np.float64)
 
     @staticmethod
     def default_optimization(d1, d2, d3, p):
-        return abs(d1) + abs(d2) + abs(d3)
+        return norm([d1, d2, d3], ord=1)
 
     @staticmethod
     def minimum_change(d1, d2, d3, p):
-        return (90 - degrees(d1) - p[1]) ** 2 + (90 - degrees(d2) - p[2]) ** 2 + (90 - degrees(d3) - p[3]) ** 2
+        return norm(90 - (np.rad2deg(np.array([d1, d2, d3])) - p[:3]), ord=2)
 
     def __init__(self, l1, l2, l3, opt=default_optimization):
+        """
+        :param l1: Length of the first segment
+        :param l2: Length of the second segment
+        :param l3: Length of the third segment
+        :param opt: The optimization function.
+        """
         self.l1 = l1
         self.l2 = l2
         self.l3 = l3
         self.len = l1 + l2 + l3
         self.position = Arm.default_position.copy()
-        self.rad_pos = [half_pi, half_pi, half_pi, half_pi, half_pi, pi / 4]
+
+        # servo degree in radians
+        self.rad_pos = np.array([half_pi, half_pi, half_pi, half_pi, half_pi, pi / 4], dtype=np.float64)
         self.opt = opt
 
     def get_radians(self, x, y, z):
-        distance = sqrt(x ** 2 + y ** 2 + z ** 2)
+        """
+        :param x:
+        :param y:
+        :param z:
+        :return: a list of radians
+        """
+        distance = norm((x, y, z), ord=2)
         if distance > self.len:
             raise Exception("Too far to reach!")
 
@@ -37,17 +52,29 @@ class Arm:
         # if not pi * 0.75 < d0 < -pi * 0.25:
         #     raise Exception("Out of range!")
 
-        d1, d2, d3 = self.solve_three(sqrt(x ** 2 + y ** 2), z)
-        return d0, d1, d2, d3
+        d1, d2, d3 = self.solve_three(norm((x, y), ord=2), z)
+        return np.array((d0, d1, d2, d3), dtype=np.float64)
 
     def get_degrees(self, x, y, z):
+        """
+        Get servo rotation required to find (x, y, z)
+        :param x:
+        :param y:
+        :param z:
+        :return: A list of degrees
+        """
         self.rads_to_degs(self.get_radians(x, y, z))
 
     @staticmethod
     def rads_to_degs(rads):
-        return [round(degrees(rads[0])), round(degrees(rads[1])), round(degrees(rads[2])), round(degrees(rads[3]))]
+        return np.round(np.rad2deg(rads))
 
     def solve_three(self, a, b):
+        """
+        :param a: x coordinate in the plane
+        :param b: y coordinate in the plane
+        :return: a list of degrees
+        """
         rg = self.get_m_range(a, b)
         s = inf
         rs = None
@@ -70,7 +97,7 @@ class Arm:
 
     def get_m_range(self, a, b):
         rg = []
-        c1 = self.l2 ** 2 + self.l3 ** 2
+        c1 = norm((self.l2, self.l3), ord=2)
         c2 = (self.l2 + self.l3) ** 2
         for i in range(-self.l1 * Arm.steps, self.l1 * Arm.steps):
             m = i / Arm.steps
@@ -100,9 +127,7 @@ class Arm:
     # Update the joint angles so that the arm can reach (x, y, z)
     def goto(self, x, y, z):
         self.rad_pos = self.get_radians(x, y, z)
-        degs = self.cov_degs(self.rads_to_degs(self.rad_pos))
-        degs.extend(self.position[4:])
-        self.position = degs
+        self.position = np.concatenate((self.cov_degs(self.rads_to_degs(self.rad_pos)), self.position[4:]))
 
     # get coordinates of each joint in three dimensional space
     def get_coordinates(self):
@@ -151,8 +176,10 @@ def update(n, t):
     callback(1)
 
 
-write_serial = True
+write_serial = False
 if write_serial:
+    from Protocol import ServoProtocol
+
     sr = ServoProtocol('COM3')
 
 arm = Arm(93, 87, 139, Arm.minimum_change)
