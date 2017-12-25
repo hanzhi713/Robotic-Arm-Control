@@ -1,4 +1,4 @@
-# Robotic Arm Simulato and Controller
+# Robotic Arm Simulator and Controller
 ### Let the arm find its way to a given spatial coordinates
 ### Dependencies: Numpy, Matplotlib and Pyserial
 
