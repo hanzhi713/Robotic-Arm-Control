@@ -1,9 +1,11 @@
-# Robotic-Arm-Simulator
-#### Dependencies: Numpy, Matplotlib and Pyserial
-##### Let the arm find its way to a given spatial coordinates
+# Robotic Arm Simulato and Controller
+### Let the arm find its way to a given spatial coordinates
+### Dependencies: Numpy, Matplotlib and Pyserial
 
 Remember to adjust the length of each link when instantiating the Arm object
 
-![slider](demo/slider.PNG)
+Used together with the [Arduino-side program](https://github.com/hanzhi713/Robotic-Arm-Protocol) to control a physical robotic arm
 
+![demo](demo/Physical.PNG)
+![slider](demo/slider.PNG)
 ![graph](demo/graph.PNG)
