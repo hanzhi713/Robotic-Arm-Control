@@ -7,7 +7,12 @@ Remember to adjust the length of each link when instantiating the Arm object
 Used together with the [Arduino-side program](https://github.com/hanzhi713/Robotic-Arm-Protocol) to control a physical robotic arm with six degrees of freedom
 
 ## Dependencies 
+
 Numpy, Matplotlib and PySerial
+
+## Mechanism
+
+See [here](/Mechanism.md)
 
 ## Credits
 
