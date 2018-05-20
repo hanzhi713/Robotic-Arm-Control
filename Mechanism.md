@@ -26,7 +26,7 @@ B is on a circle whose center is the origin and radius is l<sub>1</sub>, so its 
 
 So the inequality could be formulated:
 
-<img src="http://latex.codecogs.com/svg.latex?\large&space;\sqrt{l_2^2&space;&plus;&space;l_3^2}&space;<&space;\sqrt{(m&space;-&space;a)^2&space;&plus;&space;\left&space;(&space;\sqrt{l_1^2&space;-&space;m^2}&space;-&space;b&space;\right&space;)^2}&space;<&space;l_2^2&space;&plus;&space;l_3^2" title="\large \sqrt{l_2^2 + l_3^2} < \sqrt{(m - a)^2 + \left ( \sqrt{l_1^2 - m^2} - b \right )^2} < l_2^2 + l_3^2" />
+<img src="http://latex.codecogs.com/svg.latex?\large&space;\sqrt{l_2^2&space;&plus;&space;l_3^2}&space;<&space;\sqrt{(m&space;-&space;a)^2&space;&plus;&space;\left&space;(&space;\sqrt{l_1^2&space;-&space;m^2}&space;-&space;b&space;\right&space;)^2}&space;<&space;l_2&space;&plus;&space;l_3" title="\large \sqrt{l_2^2 + l_3^2} < \sqrt{(m - a)^2 + \left ( \sqrt{l_1^2 - m^2} - b \right )^2} < l_2 + l_3" />
 
 Any m that satisfies this inequality will be a solution. Given a particular m, the angles of servos could be calculated through a series of geometric derivations
 
