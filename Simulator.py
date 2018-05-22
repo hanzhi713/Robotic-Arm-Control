@@ -1,4 +1,7 @@
 from math import *
+import matplotlib
+
+matplotlib.use("TkAgg")  # 可能Mac特有的要求，必须要很明显地说matplotlib用tkinter
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 from tkinter import *
@@ -75,7 +78,18 @@ class Arm:
         :param b: y coordinate in the plane
         :return: a list of degrees
         """
-        rg = self.get_m_range(a, b)
+        ra = self.get_m_range(a, b)
+        # print(ra)
+        if len(ra) == 2:
+            if ra[0] < -self.l1: ra[0] = -self.l1
+            if ra[1] > self.l1: ra[1] = self.l1
+            rg = np.arange(ra[0] + 1 / Arm.steps, ra[1], 1 / Arm.steps)
+        elif len(ra) == 4:
+            rg = np.concatenate((np.arange(ra[0] + 1 / Arm.steps, ra[1], 1 / Arm.steps),
+                                 np.arange(ra[2] + 1 / Arm.steps, ra[3], 1 / Arm.steps)))
+        else:
+            raise Exception('!!!')
+
         s = inf
         rs = None
         for m in rg:
@@ -96,15 +110,70 @@ class Arm:
         return rs
 
     def get_m_range(self, a, b):
-        rg = []
-        c1 = norm((self.l2, self.l3), ord=2)
-        c2 = (self.l2 + self.l3) ** 2
-        for i in range(-self.l1 * Arm.steps, self.l1 * Arm.steps):
-            m = i / Arm.steps
-            v = (a - m) ** 2 + (b - sqrt(self.l1 ** 2 - m ** 2)) ** 2
-            if c1 < v < c2:
-                rg.append(m)
-        return rg
+        # rg = []
+        # c1 = norm((self.l2, self.l3), ord=2)
+        # c2 = (self.l2 + self.l3) ** 2
+        # for i in range(-self.l1 * Arm.steps, self.l1 * Arm.steps):
+        #     m = i / Arm.steps
+        #     v = (a - m) ** 2 + (b - sqrt(self.l1 ** 2 - m ** 2)) ** 2
+        #     if c1 < v < c2:
+        #         rg.append(m)
+
+        # return rg
+
+        l1 = self.l1
+        l2 = self.l2
+        l3 = self.l3
+
+        A = l2 ** 2 + l3 ** 2 - l1 ** 2 - a ** 2 - b ** 2
+
+        temp = a ** 2 + b ** 2
+        d1 = 4 * temp * l1 ** 2 - A ** 2
+
+        if d1 > 0:
+            m11 = (-A * a - b * sqrt(d1)) / (2 * temp)
+            m12 = (-A * a + b * sqrt(d1)) / (2 * temp)
+
+        B = A + 2 * l2 * l3
+        d2 = 4 * temp * l1 ** 2 - B ** 2
+
+        if d2 > 0:
+            m21 = (-B * a - b * sqrt(d2)) / (2 * temp)
+            m22 = (-B * a + b * sqrt(d2)) / (2 * temp)
+
+        # find the intersection between [-oo, m11], [m21, m22] and [m12, +oo]
+        if d1 > 0 and d2 > 0:
+            if m12 < m21 or m11 > m22:
+                print(1)
+                return m21, m22
+
+            elif m11 < m21 < m12 < m22:
+                print(2)
+                return m12, m22
+
+            elif m21 < m11 and m12 < m22:
+                print(3)
+                return m21, m11, m12, m22
+
+            elif m21 < m11 < m22 < m12:
+                print(4)
+                return m21, m11
+
+            # I guess this isn't possible
+            elif m11 < m21 and m12 > m22:
+                print(5)
+                return []
+
+        elif d1 > 0 and d2 < 0:
+            print(6)
+            return -self.l1, m11, m12, self.l1
+
+        elif d1 < 0 and d2 > 0:
+            print(7)
+            return m21, m22
+
+        else:
+            print(8)
 
     # convert degrees to servo angles
     @staticmethod
@@ -182,7 +251,7 @@ if write_serial:
 
     sr = ServoProtocol('COM3')
 
-arm = Arm(93, 87, 139, Arm.minimum_change)
+arm = Arm(93, 87, 139, Arm.default_optimization)
 
 fig = plt.figure()
 ax = Axes3D(fig)
