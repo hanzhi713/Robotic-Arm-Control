@@ -8,7 +8,7 @@ To reach point D in space, the robotic arm first needs to rotate <img src="http:
 
 The spatial coordinate of the target point D is mapped to a coordinate on the blue plane, which could be calculated as follow
 
-<img src="http://latex.codecogs.com/svg.latex?\large&space;f:&space;\mathbb{R}^3&space;\rightarrow&space;\mathbb{R}^2&space;\\&space;f(x,&space;y,&space;z)&space;=&space;(\sqrt{x^2&space;&plus;&space;y^2},\&space;z)" title="\large f: \mathbb{R}^3 \rightarrow \mathbb{R}^2 \\ f(x, y, z) = (\sqrt{x^2 + y^2},\ z)" />
+<img src="http://latex.codecogs.com/svg.latex?\large&space;\large&space;\begin{array}{l}&space;f:&space;\mathbb{R}^3&space;\rightarrow&space;\mathbb{R}^2&space;\\&space;f(x,&space;y,&space;z)&space;=&space;(\sqrt{x^2&space;&plus;&space;y^2},\&space;z)&space;\end{array}" title="\large \large \begin{array}{l} f: \mathbb{R}^3 \rightarrow \mathbb{R}^2 \\ f(x, y, z) = (\sqrt{x^2 + y^2},\ z) \end{array}" />
 
 Consequently, this problem is simplied to a two dimensional route planning problem. 
 
@@ -22,7 +22,7 @@ The first condition ensures that point B won't be so far away from D that the ar
 
 B is on a circle whose center is the origin and radius is l<sub>1</sub>, so its coordinates can be expressed as follow:
 
-<img src="http://latex.codecogs.com/svg.latex?\large&space;m&space;\in&space;[-l_1,&space;l_1]&space;\\\\&space;n&space;=&space;\sqrt{l_1^2&space;-&space;m^2}" title="\large m \in [-l_1, l_1] \\\\ n = \sqrt{l_1^2 - m^2}" />
+<img src="http://latex.codecogs.com/svg.latex?\large&space;\large&space;\begin{array}{l}&space;m&space;\in&space;[-l_1,&space;l_1]&space;\\\\&space;n&space;=&space;\sqrt{l_1^2&space;-&space;m^2}&space;\end{array}" title="\large \large \begin{array}{l} m \in [-l_1, l_1] \\\\ n = \sqrt{l_1^2 - m^2} \end{array}" />
 
 So the inequality could be formulated:
 
@@ -38,7 +38,7 @@ Any m that satisfies this inequality will be a solution. Given a particular m, t
 <br/>
 <img src="http://latex.codecogs.com/svg.latex?\large&space;\theta_2&space;=&space;\frac{\pi}{2}&space;-&space;\theta_1&space;-&space;\alpha&space;-&space;\beta" title="\large \theta_2 = \frac{\pi}{2} - \theta_1 - \alpha - \beta" />
 <br/>
-<img src="http://latex.codecogs.com/svg.latex?\large&space;\theta_3&space;=&space;\pi&space;-&space;\widehat{BCD}" title="\large \theta_3 = \pi - \widehat{BCD}" />
+<img src="http://latex.codecogs.com/svg.latex?\large&space;\theta_3&space;=&space;\pi&space;-&space;B\widehat{C}D" title="\large \theta_3 = \pi - B\widehat{C}D" />
 
 &alpha; could be obtained by using the cosine rule
 
@@ -57,7 +57,7 @@ where c is the length of BD
 
 angle BCD can be found by using the cosine rule:
 
-<img src="http://latex.codecogs.com/svg.latex?\large&space;\widehat{BCD}&space;=&space;\arccos{\left&space;(&space;\frac{l_2^2&plus;l_3^2&space;-&space;c^2}{2l_2l_3}&space;\right&space;)}" title="\large \widehat{BCD} = \arccos{\left ( \frac{l_2^2+l_3^2 - c^2}{2l_2l_3} \right )}" />
+<img src="http://latex.codecogs.com/svg.latex?\large&space;B\widehat{C}D&space;=&space;\arccos{\left&space;(&space;\frac{l_2^2&plus;l_3^2&space;-&space;c^2}{2l_2l_3}&space;\right&space;)}" title="\large B\widehat{C}D = \arccos{\left ( \frac{l_2^2+l_3^2 - c^2}{2l_2l_3} \right )}" />
 
 Finally, combine all equations and using only known values:
 
