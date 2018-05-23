@@ -16,13 +16,13 @@ Consequently, this problem is simplied to a two dimensional route planning probl
 
 As shown in the diagram above, the solution for this problem is not unique. A particular position of the first segment (l<sub>1</sub>) corresponds to a particular solution. However, not all positions of point B are suitable. We require:
 
-<img src="http://latex.codecogs.com/svg.latex?\inline&space;\large&space;\left\{\begin{matrix}&space;l_2&space;&plus;&space;l_3&space;>&space;BD&space;\\&space;\sqrt{l_2^2&space;&plus;&space;l_3^2}&space;<&space;BD&space;\end{matrix}\right." title="\large \left\{\begin{matrix} l_2 + l_3 > BD \\ \sqrt{l_2^2 + l_3^2} < BD \end{matrix}\right." />
+<img src="http://latex.codecogs.com/svg.latex?\large&space;\large&space;\left\{&space;\begin{array}{ll}&space;&l_2&space;&plus;&space;l_3&space;>&space;BD&space;\\&space;&\sqrt{l_2^2&space;&plus;&space;l_3^2}&space;<&space;BD&space;\end{array}&space;\right." title="\large \large \left\{ \begin{array}{ll} &l_2 + l_3 > BD \\ &\sqrt{l_2^2 + l_3^2} < BD \end{array} \right." />
 
 The first condition ensures that point B won't be so far away from D that the arm couldn't reach D. The second condition ensures that B won't be so close to point D that the angle BCD becomes acute (because the servo cannot rotate more than 90 degrees to the right).
 
 B is on a circle whose center is the origin and radius is l<sub>1</sub>, so its coordinates can be expressed as follow:
 
-<img src="http://latex.codecogs.com/svg.latex?\large&space;\large&space;\begin{array}{l}&space;m&space;\in&space;[-l_1,&space;l_1]&space;\\\\&space;n&space;=&space;\sqrt{l_1^2&space;-&space;m^2}&space;\end{array}" title="\large \large \begin{array}{l} m \in [-l_1, l_1] \\\\ n = \sqrt{l_1^2 - m^2} \end{array}" />
+<img src="http://latex.codecogs.com/svg.latex?\large&space;\large&space;\large&space;\begin{array}{l}&space;m&space;\in&space;[-l_1,&space;l_1]&space;\\&space;n&space;=&space;\sqrt{l_1^2&space;-&space;m^2}&space;\end{array}" title="\large \large \large \begin{array}{l} m \in [-l_1, l_1] \\ n = \sqrt{l_1^2 - m^2} \end{array}" />
 
 So the inequality could be formulated:
 
@@ -34,11 +34,7 @@ Any m that satisfies this inequality will be a solution. Given a particular m, t
 
 <br/>
 
-<img src="http://latex.codecogs.com/svg.latex?\large&space;\theta_1&space;=&space;\arcsin{\frac{m}{l_1}}" title="\large \theta_1 = \arcsin{\frac{m}{l_1}}" />
-<br/>
-<img src="http://latex.codecogs.com/svg.latex?\large&space;\theta_2&space;=&space;\frac{\pi}{2}&space;-&space;\theta_1&space;-&space;\alpha&space;-&space;\beta" title="\large \theta_2 = \frac{\pi}{2} - \theta_1 - \alpha - \beta" />
-<br/>
-<img src="http://latex.codecogs.com/svg.latex?\large&space;\theta_3&space;=&space;\pi&space;-&space;B\widehat{C}D" title="\large \theta_3 = \pi - B\widehat{C}D" />
+<img src="http://latex.codecogs.com/svg.latex?\large&space;\large&space;\begin{array}{l}&space;\theta_1&space;=&space;\arcsin{\frac{m}{l_1}}&space;\\&space;\theta_2&space;=&space;\frac{\pi}{2}&space;-&space;\theta_1&space;-&space;\alpha&space;-&space;\beta&space;\\&space;\theta_3&space;=&space;\pi&space;-&space;B\widehat{C}D&space;\\&space;\end{array}" title="\large \large \begin{array}{l} \theta_1 = \arcsin{\frac{m}{l_1}} \\ \theta_2 = \frac{\pi}{2} - \theta_1 - \alpha - \beta \\ \theta_3 = \pi - B\widehat{C}D \\ \end{array}" />
 
 &alpha; could be obtained by using the cosine rule
 
@@ -46,10 +42,7 @@ Any m that satisfies this inequality will be a solution. Given a particular m, t
 
 where c is the length of BD
 
-<img src="http://latex.codecogs.com/svg.latex?\large&space;c&space;=&space;\sqrt{(a-m)^2&space;&plus;&space;(b&space;-&space;n)^2}" title="\large c = \sqrt{(a-m)^2 + (b - n)^2}" />
-<br/>
-
-<img src="http://latex.codecogs.com/svg.latex?\large&space;n&space;=&space;\sqrt{l_1^2&space;-&space;m^2}" title="\large n = \sqrt{l_1^2 - m^2}" />
+<img src="http://latex.codecogs.com/svg.latex?\large&space;\large&space;\begin{array}{l}&space;c&space;=&space;\sqrt{(a-m)^2&space;&plus;&space;(b-n)^2}&space;\\\\&space;n&space;=&space;\sqrt{l_1^2&space;-&space;m^2}&space;\end{array}" title="\large \large \begin{array}{l} c = \sqrt{(a-m)^2 + (b-n)^2} \\\\ n = \sqrt{l_1^2 - m^2} \end{array}" />
 
 &beta; can be found by applying arctan to the gradient of BD:
 
