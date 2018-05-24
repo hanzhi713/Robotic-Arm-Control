@@ -28,7 +28,23 @@ So the inequality could be formulated:
 
 <img src="http://latex.codecogs.com/svg.latex?\large&space;\sqrt{l_2^2&space;&plus;&space;l_3^2}&space;<&space;\sqrt{(m&space;-&space;a)^2&space;&plus;&space;\left&space;(&space;\sqrt{l_1^2&space;-&space;m^2}&space;-&space;b&space;\right&space;)^2}&space;<&space;l_2&space;&plus;&space;l_3" title="\large \sqrt{l_2^2 + l_3^2} < \sqrt{(m - a)^2 + \left ( \sqrt{l_1^2 - m^2} - b \right )^2} < l_2 + l_3" />
 
-Any m that satisfies this inequality will be a solution. Given a particular m, the angles of servos could be calculated through a series of geometric derivations.
+This inequality could be solved analytically. Take equal at the left and take the square of both sides we could obtain
+
+<img src="http://latex.codecogs.com/svg.latex?\large&space;\large&space;l_2^2&plus;l_3^2&space;=&space;m^2&space;-&space;2ma&space;-&space;a^2&space;&plus;&space;(l_1^2&space;-&space;m^2)&space;-2b\sqrt{l_1^2-m^2}&space;&plus;&space;b^2&space;\\\\&space;l_2^2&plus;l_3^2&space;&plus;&space;2ma&space;-&space;l_1^2&space;-&space;a^2&space;-&space;b^2&space;=&space;-2b\sqrt{l_1^2-m^2}&space;\\\\&space;let\&space;A&space;=&space;l_2^2&plus;l_3^2&space;-&space;l_1^2&space;-&space;a^2&space;-&space;b^2&space;\\\\&space;A&space;&plus;&space;2ma&space;=&space;-2b\sqrt{l_1^2&space;-&space;m^2}&space;\\\\&space;A^2&space;&plus;&space;4Aam&space;&plus;&space;4a^2m^2&space;=&space;4b^2(l_1^2-m^2)\\\\&space;4(a^2&plus;b^2)m^2&space;&plus;&space;4Aam&space;-&space;4b^2l_1^2&space;&plus;&space;A^2&space;=&space;0&space;\\\\&space;m&space;=&space;\frac{-4Aa\pm&space;\sqrt{16A^2a^2&space;-&space;16(a^2&plus;b^2)(A^2-&space;4b^2l_1^2)}}{2*4(a^2&plus;b^2)}&space;=&space;\frac{-Aa\pm&space;b\sqrt{4l_1^2(a^2&space;&plus;&space;b^2)-A^2}}{2(a^2&plus;b^2)}" title="\large \large l_2^2+l_3^2 = m^2 - 2ma - a^2 + (l_1^2 - m^2) -2b\sqrt{l_1^2-m^2} + b^2 \\\\ l_2^2+l_3^2 + 2ma - l_1^2 - a^2 - b^2 = -2b\sqrt{l_1^2-m^2} \\\\ let\ A = l_2^2+l_3^2 - l_1^2 - a^2 - b^2 \\\\ A + 2ma = -2b\sqrt{l_1^2 - m^2} \\\\ A^2 + 4Aam + 4a^2m^2 = 4b^2(l_1^2-m^2)\\\\ 4(a^2+b^2)m^2 + 4Aam - 4b^2l_1^2 + A^2 = 0 \\\\ m = \frac{-4Aa\pm \sqrt{16A^2a^2 - 16(a^2+b^2)(A^2- 4b^2l_1^2)}}{2*4(a^2+b^2)} = \frac{-Aa\pm b\sqrt{4l_1^2(a^2 + b^2)-A^2}}{2(a^2+b^2)}" />
+
+Similarly, one could take equal at the right to obtain two roots
+
+<img src="http://latex.codecogs.com/svg.latex?\large&space;\large&space;B&space;=&space;l_2^2&plus;l_3^2&space;&plus;&space;2l_2l_3&space;-&space;l_1^2&space;-&space;a^2&space;-&space;b^2\\\\&space;m&space;=&space;\frac{-Ba\pm&space;b\sqrt{4l_1^2(a^2&space;&plus;&space;b^2)-B^2}}{2(a^2&plus;b^2)}" title="\large \large B = l_2^2+l_3^2 + 2l_2l_3 - l_1^2 - a^2 - b^2\\\\ m = \frac{-Ba\pm b\sqrt{4l_1^2(a^2 + b^2)-B^2}}{2(a^2+b^2)}" />
+
+Let
+
+<img src="http://latex.codecogs.com/svg.latex?\large&space;m_1&space;=&space;\frac{-Aa&space;-&space;b\sqrt{4l_1^2(a^2&space;&plus;&space;b^2)-A^2}}{2(a^2&plus;b^2)}\\\\&space;m_2&space;=&space;\frac{-Aa&space;&plus;&space;b\sqrt{4l_1^2(a^2&space;&plus;&space;b^2)-A^2}}{2(a^2&plus;b^2)}\\\\&space;m_3&space;=&space;\frac{-Ba&space;-&space;b\sqrt{4l_1^2(a^2&space;&plus;&space;b^2)-B^2}}{2(a^2&plus;b^2)}\\\\&space;m_4&space;=&space;\frac{-Ba&space;&plus;&space;b\sqrt{4l_1^2(a^2&space;&plus;&space;b^2)-B^2}}{2(a^2&plus;b^2)}" title="\large m_1 = \frac{-Aa - b\sqrt{4l_1^2(a^2 + b^2)-A^2}}{2(a^2+b^2)}\\\\ m_2 = \frac{-Aa + b\sqrt{4l_1^2(a^2 + b^2)-A^2}}{2(a^2+b^2)}\\\\ m_3 = \frac{-Ba - b\sqrt{4l_1^2(a^2 + b^2)-B^2}}{2(a^2+b^2)}\\\\ m_4 = \frac{-Ba + b\sqrt{4l_1^2(a^2 + b^2)-B^2}}{2(a^2+b^2)}" />
+
+The range of m is the intersection of these regions
+
+<img src="http://latex.codecogs.com/svg.latex?\large&space;m&space;\in&space;\left&space;(&space;[-l_1,&space;m_1]&space;\cap&space;[m_2,&space;l_1]&space;\cap&space;[m_3,&space;m_4]&space;\right&space;)" title="\large m \in \left ( [-l_1, m_1] \cap [m_2, l_1] \cap [m_3, m_4] \right )" />
+
+Any m belongs to this set will be a solution. Given a particular m, the angles of servos could be calculated through a series of geometric derivations.
 
 ## Start interlude
 
