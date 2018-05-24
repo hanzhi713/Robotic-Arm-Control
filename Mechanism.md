@@ -16,13 +16,13 @@ Consequently, this problem is simplied to a two dimensional route planning probl
 
 As shown in the diagram above, the solution for this problem is not unique. A particular position of the first segment (l<sub>1</sub>) corresponds to a particular solution. However, not all positions of point B are suitable. We require:
 
-<img src="http://latex.codecogs.com/svg.latex?\large&space;\large&space;\left\{&space;\begin{array}{ll}&space;&l_2&space;&plus;&space;l_3&space;>&space;BD&space;\\&space;\\&space;&\sqrt{l_2^2&space;&plus;&space;l_3^2}&space;<&space;BD&space;\end{array}&space;\right." title="\large \large \left\{ \begin{array}{ll} &l_2 + l_3 > BD \\ \\ &\sqrt{l_2^2 + l_3^2} < BD \end{array} \right." />
+<img src="http://latex.codecogs.com/svg.latex?\large&space;\left\{&space;\begin{array}{ll}&space;&l_2&space;&plus;&space;l_3&space;>&space;BD&space;\\&space;\\&space;&\sqrt{l_2^2&space;&plus;&space;l_3^2}&space;<&space;BD&space;\end{array}&space;\right." title="\large \left\{ \begin{array}{ll} &l_2 + l_3 > BD \\ \\ &\sqrt{l_2^2 + l_3^2} < BD \end{array} \right." />
 
 The first condition ensures that point B won't be so far away from D that the arm couldn't reach D. The second condition ensures that B won't be so close to point D that the angle BCD becomes acute (because the servo cannot rotate more than 90 degrees to the right).
 
 B is on a circle whose center is the origin and radius is l<sub>1</sub>, so its coordinates can be expressed as follow:
 
-<img src="http://latex.codecogs.com/svg.latex?\large&space;\large&space;\begin{array}{l}&space;m&space;\in&space;[-l_1,&space;l_1]&space;\\\\&space;n&space;=&space;\sqrt{l_1^2&space;-&space;m^2}&space;\end{array}" title="\large \large \begin{array}{l} m \in [-l_1, l_1] \\\\ n = \sqrt{l_1^2 - m^2} \end{array}" />
+<img src="http://latex.codecogs.com/svg.latex?\large&space;\begin{array}{l}&space;m&space;\in&space;[-l_1,&space;l_1]&space;\\\\&space;n&space;=&space;\sqrt{l_1^2&space;-&space;m^2}&space;\end{array}" title="\large \begin{array}{l} m \in [-l_1, l_1] \\\\ n = \sqrt{l_1^2 - m^2} \end{array}" />
 
 So the inequality could be formulated:
 
@@ -30,15 +30,15 @@ So the inequality could be formulated:
 
 This inequality could be solved analytically. Take equal at the left and take the square of both sides we could obtain
 
-<img src="http://latex.codecogs.com/svg.latex?\large&space;\large&space;l_2^2&plus;l_3^2&space;=&space;m^2&space;-&space;2ma&space;-&space;a^2&space;&plus;&space;(l_1^2&space;-&space;m^2)&space;-2b\sqrt{l_1^2-m^2}&space;&plus;&space;b^2&space;\\\\&space;l_2^2&plus;l_3^2&space;&plus;&space;2ma&space;-&space;l_1^2&space;-&space;a^2&space;-&space;b^2&space;=&space;-2b\sqrt{l_1^2-m^2}&space;\\\\&space;let\&space;A&space;=&space;l_2^2&plus;l_3^2&space;-&space;l_1^2&space;-&space;a^2&space;-&space;b^2&space;\\\\&space;A&space;&plus;&space;2ma&space;=&space;-2b\sqrt{l_1^2&space;-&space;m^2}&space;\\\\&space;A^2&space;&plus;&space;4Aam&space;&plus;&space;4a^2m^2&space;=&space;4b^2(l_1^2-m^2)\\\\&space;4(a^2&plus;b^2)m^2&space;&plus;&space;4Aam&space;-&space;4b^2l_1^2&space;&plus;&space;A^2&space;=&space;0&space;\\\\&space;m&space;=&space;\frac{-4Aa\pm&space;\sqrt{16A^2a^2&space;-&space;16(a^2&plus;b^2)(A^2-&space;4b^2l_1^2)}}{2*4(a^2&plus;b^2)}&space;=&space;\frac{-Aa\pm&space;b\sqrt{4l_1^2(a^2&space;&plus;&space;b^2)-A^2}}{2(a^2&plus;b^2)}" title="\large \large l_2^2+l_3^2 = m^2 - 2ma - a^2 + (l_1^2 - m^2) -2b\sqrt{l_1^2-m^2} + b^2 \\\\ l_2^2+l_3^2 + 2ma - l_1^2 - a^2 - b^2 = -2b\sqrt{l_1^2-m^2} \\\\ let\ A = l_2^2+l_3^2 - l_1^2 - a^2 - b^2 \\\\ A + 2ma = -2b\sqrt{l_1^2 - m^2} \\\\ A^2 + 4Aam + 4a^2m^2 = 4b^2(l_1^2-m^2)\\\\ 4(a^2+b^2)m^2 + 4Aam - 4b^2l_1^2 + A^2 = 0 \\\\ m = \frac{-4Aa\pm \sqrt{16A^2a^2 - 16(a^2+b^2)(A^2- 4b^2l_1^2)}}{2*4(a^2+b^2)} = \frac{-Aa\pm b\sqrt{4l_1^2(a^2 + b^2)-A^2}}{2(a^2+b^2)}" />
+<img src="http://latex.codecogs.com/svg.latex?\large&space;\begin{array}{l}&space;l_2^2&plus;l_3^2&space;=&space;m^2&space;-&space;2ma&space;-&space;a^2&space;&plus;&space;(l_1^2&space;-&space;m^2)&space;-2b\sqrt{l_1^2-m^2}&space;&plus;&space;b^2&space;\\\\&space;l_2^2&plus;l_3^2&space;&plus;&space;2ma&space;-&space;l_1^2&space;-&space;a^2&space;-&space;b^2&space;=&space;-2b\sqrt{l_1^2-m^2}&space;\\\\&space;let\&space;A&space;=&space;l_2^2&plus;l_3^2&space;-&space;l_1^2&space;-&space;a^2&space;-&space;b^2&space;\\\\&space;A&space;&plus;&space;2ma&space;=&space;-2b\sqrt{l_1^2&space;-&space;m^2}&space;\\\\&space;A^2&space;&plus;&space;4Aam&space;&plus;&space;4a^2m^2&space;=&space;4b^2(l_1^2-m^2)\\\\&space;4(a^2&plus;b^2)m^2&space;&plus;&space;4Aam&space;-&space;4b^2l_1^2&space;&plus;&space;A^2&space;=&space;0&space;\\\\&space;m&space;=&space;\frac{-4Aa\pm&space;\sqrt{16A^2a^2&space;-&space;16(a^2&plus;b^2)(A^2-&space;4b^2l_1^2)}}{2*4(a^2&plus;b^2)}&space;=&space;\frac{-Aa\pm&space;b\sqrt{4l_1^2(a^2&space;&plus;&space;b^2)-A^2}}{2(a^2&plus;b^2)}&space;\end{array}" title="\large \begin{array}{l} l_2^2+l_3^2 = m^2 - 2ma - a^2 + (l_1^2 - m^2) -2b\sqrt{l_1^2-m^2} + b^2 \\\\ l_2^2+l_3^2 + 2ma - l_1^2 - a^2 - b^2 = -2b\sqrt{l_1^2-m^2} \\\\ let\ A = l_2^2+l_3^2 - l_1^2 - a^2 - b^2 \\\\ A + 2ma = -2b\sqrt{l_1^2 - m^2} \\\\ A^2 + 4Aam + 4a^2m^2 = 4b^2(l_1^2-m^2)\\\\ 4(a^2+b^2)m^2 + 4Aam - 4b^2l_1^2 + A^2 = 0 \\\\ m = \frac{-4Aa\pm \sqrt{16A^2a^2 - 16(a^2+b^2)(A^2- 4b^2l_1^2)}}{2*4(a^2+b^2)} = \frac{-Aa\pm b\sqrt{4l_1^2(a^2 + b^2)-A^2}}{2(a^2+b^2)} \end{array}" />
 
 Similarly, one could take equal at the right to obtain two roots
 
-<img src="http://latex.codecogs.com/svg.latex?\large&space;\large&space;B&space;=&space;l_2^2&plus;l_3^2&space;&plus;&space;2l_2l_3&space;-&space;l_1^2&space;-&space;a^2&space;-&space;b^2\\\\&space;m&space;=&space;\frac{-Ba\pm&space;b\sqrt{4l_1^2(a^2&space;&plus;&space;b^2)-B^2}}{2(a^2&plus;b^2)}" title="\large \large B = l_2^2+l_3^2 + 2l_2l_3 - l_1^2 - a^2 - b^2\\\\ m = \frac{-Ba\pm b\sqrt{4l_1^2(a^2 + b^2)-B^2}}{2(a^2+b^2)}" />
+<img src="http://latex.codecogs.com/svg.latex?\large&space;\begin{array}{l}&space;B&space;=&space;l_2^2&plus;l_3^2&space;&plus;&space;2l_2l_3&space;-&space;l_1^2&space;-&space;a^2&space;-&space;b^2\\\\&space;m&space;=&space;\frac{-Ba\pm&space;b\sqrt{4l_1^2(a^2&space;&plus;&space;b^2)-B^2}}{2(a^2&plus;b^2)}&space;\end{array}" title="\large \begin{array}{l} B = l_2^2+l_3^2 + 2l_2l_3 - l_1^2 - a^2 - b^2\\\\ m = \frac{-Ba\pm b\sqrt{4l_1^2(a^2 + b^2)-B^2}}{2(a^2+b^2)} \end{array}" />
 
 Let
 
-<img src="http://latex.codecogs.com/svg.latex?\large&space;m_1&space;=&space;\frac{-Aa&space;-&space;b\sqrt{4l_1^2(a^2&space;&plus;&space;b^2)-A^2}}{2(a^2&plus;b^2)}\\\\&space;m_2&space;=&space;\frac{-Aa&space;&plus;&space;b\sqrt{4l_1^2(a^2&space;&plus;&space;b^2)-A^2}}{2(a^2&plus;b^2)}\\\\&space;m_3&space;=&space;\frac{-Ba&space;-&space;b\sqrt{4l_1^2(a^2&space;&plus;&space;b^2)-B^2}}{2(a^2&plus;b^2)}\\\\&space;m_4&space;=&space;\frac{-Ba&space;&plus;&space;b\sqrt{4l_1^2(a^2&space;&plus;&space;b^2)-B^2}}{2(a^2&plus;b^2)}" title="\large m_1 = \frac{-Aa - b\sqrt{4l_1^2(a^2 + b^2)-A^2}}{2(a^2+b^2)}\\\\ m_2 = \frac{-Aa + b\sqrt{4l_1^2(a^2 + b^2)-A^2}}{2(a^2+b^2)}\\\\ m_3 = \frac{-Ba - b\sqrt{4l_1^2(a^2 + b^2)-B^2}}{2(a^2+b^2)}\\\\ m_4 = \frac{-Ba + b\sqrt{4l_1^2(a^2 + b^2)-B^2}}{2(a^2+b^2)}" />
+<img src="http://latex.codecogs.com/svg.latex?\large&space;\begin{array}{l}&space;m_1&space;=&space;\frac{-Aa&space;-&space;b\sqrt{4l_1^2(a^2&space;&plus;&space;b^2)-A^2}}{2(a^2&plus;b^2)}\\\\&space;m_2&space;=&space;\frac{-Aa&space;&plus;&space;b\sqrt{4l_1^2(a^2&space;&plus;&space;b^2)-A^2}}{2(a^2&plus;b^2)}\\\\&space;m_3&space;=&space;\frac{-Ba&space;-&space;b\sqrt{4l_1^2(a^2&space;&plus;&space;b^2)-B^2}}{2(a^2&plus;b^2)}\\\\&space;m_4&space;=&space;\frac{-Ba&space;&plus;&space;b\sqrt{4l_1^2(a^2&space;&plus;&space;b^2)-B^2}}{2(a^2&plus;b^2)}&space;\end{array}" title="\large \begin{array}{l} m_1 = \frac{-Aa - b\sqrt{4l_1^2(a^2 + b^2)-A^2}}{2(a^2+b^2)}\\\\ m_2 = \frac{-Aa + b\sqrt{4l_1^2(a^2 + b^2)-A^2}}{2(a^2+b^2)}\\\\ m_3 = \frac{-Ba - b\sqrt{4l_1^2(a^2 + b^2)-B^2}}{2(a^2+b^2)}\\\\ m_4 = \frac{-Ba + b\sqrt{4l_1^2(a^2 + b^2)-B^2}}{2(a^2+b^2)} \end{array}" />
 
 The range of m is the intersection of these regions
 
@@ -46,18 +46,18 @@ The range of m is the intersection of these regions
 
 Any m belongs to this set will be a solution. Given a particular m, the angles of servos could be calculated through a series of geometric derivations.
 
-## Start interlude
+## Alex's method to obtain the set of solutions (Written by [Alex](https://github.com/Vol0324))
 
 Well, there is another more straightforward way to calculate the angle and the coordinates.
 
 Suppose the angle subtended by the x-axis and DO is &phi; and the distance DO equals k. We can write the above formula into such:
 <p>
-<img src="http://latex.codecogs.com/svg.latex?\large&space;\large&space;\begin{array}{l}&space;l_2^2&plus;l_3^2&space;\leq(k\cos{\varphi}-l_1\sin{\theta_1})^2&plus;(k\sin{\varphi}-l_1\cos{\theta_1})^2\leq&space;(l_2&plus;l_3)^2\\\\&space;\frac{k^2&plus;l_1^2-(l_2&plus;l_3)^2}{2kl_1}&space;\leq{sin(\theta_1&plus;\varphi)\leq{\frac{k^2&plus;l_1^2-l_2^2-l_3^2}{2kl_1}}}&space;\end{array}" title="\large \large \begin{array}{l} l_2^2+l_3^2 \leq(k\cos{\varphi}-l_1\sin{\theta_1})^2+(k\sin{\varphi}-l_1\cos{\theta_1})^2\leq (l_2+l_3)^2\\\\ \frac{k^2+l_1^2-(l_2+l_3)^2}{2kl_1} \leq{sin(\theta_1+\varphi)\leq{\frac{k^2+l_1^2-l_2^2-l_3^2}{2kl_1}}} \end{array}" />
+<img src="http://latex.codecogs.com/svg.latex?\large&space;\begin{array}{l}&space;l_2^2&plus;l_3^2&space;\leq(k\cos{\varphi}-l_1\sin{\theta_1})^2&plus;(k\sin{\varphi}-l_1\cos{\theta_1})^2\leq&space;(l_2&plus;l_3)^2\\\\&space;\frac{k^2&plus;l_1^2-(l_2&plus;l_3)^2}{2kl_1}&space;\leq{sin(\theta_1&plus;\varphi)\leq{\frac{k^2&plus;l_1^2-l_2^2-l_3^2}{2kl_1}}}&space;\end{array}" title="\large \begin{array}{l} l_2^2+l_3^2 \leq(k\cos{\varphi}-l_1\sin{\theta_1})^2+(k\sin{\varphi}-l_1\cos{\theta_1})^2\leq (l_2+l_3)^2\\\\ \frac{k^2+l_1^2-(l_2+l_3)^2}{2kl_1} \leq{sin(\theta_1+\varphi)\leq{\frac{k^2+l_1^2-l_2^2-l_3^2}{2kl_1}}} \end{array}" />
 </p>
 <p>
 At this point, naturally one will think of using the arcsin to solve the inequality. However, we have to make sure that the left side of the inequality is no smaller than -1, and the right side of the inequality is no larger than 1. Besides, as:
 </p>
-<img src="http://latex.codecogs.com/svg.latex?\large&space;\large&space;\begin{array}&space;{lcr}&space;\theta_1\in[-90\degree,&space;90\degree]&space;&&space;\varphi\in[0\degree,&space;90\degree]&space;&&space;\theta_1&plus;\varphi\in[-90\degree,&space;180\degree]&space;\end{array}" title="\large \large \begin{array} {lcr} \theta_1\in[-90\degree, 90\degree] & \varphi\in[0\degree, 90\degree] & \theta_1+\varphi\in[-90\degree, 180\degree] \end{array}" />
+<img src="http://latex.codecogs.com/svg.latex?\large&space;\begin{array}&space;{lcr}&space;\theta_1\in[-90\degree,&space;90\degree]&space;&&space;\varphi\in[0\degree,&space;90\degree]&space;&&space;\theta_1&plus;\varphi\in[-90\degree,&space;180\degree]&space;\end{array}" title="\large \begin{array} {lcr} \theta_1\in[-90\degree, 90\degree] & \varphi\in[0\degree, 90\degree] & \theta_1+\varphi\in[-90\degree, 180\degree] \end{array}" />
 <p>
 we have to make sure the angles are in the correct intervals.
 
@@ -76,10 +76,11 @@ Let
 We also need to check whether 180 - &delta;1 and 180 - &delta;2 is also an interval for &theta;1 + &phi;. To make sure that everything is proper, we need to check where 90 + &phi; lies inside the interval. 90 + &phi; is a limit that cannot be exceeded. Nevertheless, using this way we can find the range of &theta;1, and from then on we can easily find other angles.
 </p>
 
-## End interlude
+## From coordinates to angles: A geometric derivation
 
 <img src="demo/angle-solution.svg"/>
-<br/>
+
+<p>From the graph, it is easy to see that</p>
 
 <img src="http://latex.codecogs.com/svg.latex?\large&space;\large&space;\begin{array}{l}&space;\theta_1&space;=&space;\arcsin{\frac{m}{l_1}}&space;\\&space;\\&space;\theta_2&space;=&space;\frac{\pi}{2}&space;-&space;\theta_1&space;-&space;\alpha&space;-&space;\beta&space;\\&space;\\&space;\theta_3&space;=&space;\pi&space;-&space;B\widehat{C}D&space;\end{array}" title="\large \large \begin{array}{l} \theta_1 = \arcsin{\frac{m}{l_1}} \\ \\ \theta_2 = \frac{\pi}{2} - \theta_1 - \alpha - \beta \\ \\ \theta_3 = \pi - B\widehat{C}D \end{array}" />
 
