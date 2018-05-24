@@ -20,7 +20,7 @@ See [here](/Mechanism.md)
 
 @Silverwings-zero for the initial arm assembly
 
-@Vol0324 Alex for proposing another solution
+@Vol0324 Alex Zhou for proposing another solution
 
 
 ![demo](demo/Physical.PNG)
