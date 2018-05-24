@@ -8,8 +8,8 @@ from tkinter import *
 import numpy as np
 from numpy.linalg import norm
 
-half_pi = pi / 2 
-status = input("Enter either a or t: \n")
+half_pi = pi / 2
+implementation = input("Enter tt, ax or t: \n")
 
 class Arm:
     steps = 10
@@ -63,12 +63,9 @@ class Arm:
         d0 = atan2(y, x)
         # if not pi * 0.75 < d0 < -pi * 0.25:
         #     raise Exception("Out of range!")
-        if status =='t':
-            d1, d2, d3 = self.solve_three(norm((x, y), ord=2), z)
-            return np.array((d0, d1, d2, d3), dtype=np.float64)
-        else:
-            d1, d2, d3 = self.ax_solve_angle(norm((x, y), ord=2), z)
-            return np.array((d0, d1, d2, d3), dtype=np.float64)
+
+        d1, d2, d3 = self.solve_three(norm((x, y), ord=2), z)
+        return np.array((d0, d1, d2, d3), dtype=np.float64)
 
     def get_degrees(self, x, y, z):
         """
@@ -189,7 +186,7 @@ class Arm:
         else:
             raise Exception('!!!')
 
-    # For Alex's implementation
+        # For Alex's implementation
     def ax_solve_angle(self, a, b):
         theta_range = self.get_angle_range(a, b)
         s = inf
@@ -315,26 +312,15 @@ def callback(e):
     arm.goto(x, y, z)
     xs, ys, zs = arm.get_coordinates()
     ax.clear()
-    if status == 't':
-        ax.set_xlabel('X / mm')
-        ax.set_xlim(-20, 200)
-        ax.set_ylabel('Y / mm')
-        ax.set_ylim(-20, 200)
-        ax.set_zlabel('Z / mm')
-        ax.set_zlim(0, 200)
-        ax.plot(xs, ys, zs, linewidth=2.5, marker='*', markersize=8, markerfacecolor='y')
-        ax.scatter(x, y, z, c='r', s=100, marker='o')
-    else:
-        ax.set_xlabel('X / mm')
-        ax.set_xlim(-20, 200)
-        ax.set_ylabel('Y / mm')
-        ax.set_ylim(-20, 200)
-        ax.set_zlabel('Z / mm')
-        ax.set_zlim(0, 200)
-        ax.plot(xs, ys, zs, color='#FF8C00', linewidth=2.5, marker='*', markersize=8, markerfacecolor='#FFFF00')
-        ax.scatter(x, y, z, c='r', s=100, marker='o')
+    ax.set_xlabel('X / mm')
+    ax.set_xlim(-20, 200)
+    ax.set_ylabel('Y / mm')
+    ax.set_ylim(-20, 200)
+    ax.set_zlabel('Z / mm')
+    ax.set_zlim(0, 200)
+    ax.plot(xs, ys, zs, linewidth=2.5, marker='*', markersize=8, markerfacecolor='y')
+    ax.scatter(x, y, z, c='r', s=100, marker='o')
 
-    
     if write_serial:
         arm.write(sr)
 
@@ -350,7 +336,7 @@ def update(n, t):
     callback(1)
 
 
-arm = Arm(93, 87, 139, Arm.default_optimization)
+arm = Arm(93, 87, 139, Arm.default_optimization, implementation)
 
 fig = plt.figure()
 ax = Axes3D(fig)
