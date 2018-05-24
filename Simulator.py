@@ -8,8 +8,8 @@ from tkinter import *
 import numpy as np
 from numpy.linalg import norm
 
-half_pi = pi / 2  # Why? why? why?
-
+half_pi = pi / 2
+implementation = input("Enter tt, ax or t: \n")
 
 class Arm:
     steps = 10
@@ -186,7 +186,7 @@ class Arm:
         else:
             raise Exception('!!!')
 
-    # For Alex's implementation
+        # For Alex's implementation
     def ax_solve_angle(self, a, b):
         theta_range = self.get_angle_range(a, b)
         s = inf
@@ -226,7 +226,10 @@ class Arm:
             m_min = -1
         angle_1 = asin(m_min)
 
+        angle_3 = 0
+        angle_4 = 0
         if m_max > 1:
+            print(m_max)
             if pi - angle_1 - phi > pi / 2:  # Will this be a case?
                 angle_2 = pi / 2
             else:
@@ -234,13 +237,27 @@ class Arm:
         else:
             angle_2 = asin(m_max)
 
+        if pi / 2 + phi > pi - angle_1:
+            angle_3 = pi - angle_2
+            angle_4 = pi - angle_1
+        elif pi - angle_2 <= pi / 2 + phi <= pi - angle_1:
+            angle_3 = pi - angle_2
+            angle_4 = pi / 2 + phi
+
         angle_1 = angle_1 - phi
         angle_2 = angle_2 - phi
 
         c = np.rad2deg(np.array([angle_1, angle_2]))
+        if angle_3 != 0 and angle_4 != 0:
+            c = np.concatenate((c, np.rad2deg(np.array([angle_3, angle_4]))), axis=0)
+            for i in range(ceil(10 * c[0]), floor(10 * c[1] + 1)):
+                theta_range.append(i / 10)
+            for i in range(ceil(10 * c[2]), floor(10 * c[3] + 1)):
+                theta_range.append(i / 10)
+        else:
+            for i in range(ceil(10 * c[0]), floor(10 * c[1] + 1)):
+                theta_range.append(i / 10)
 
-        for i in range(ceil(10 * c[0]), floor(10 * c[1] + 1)):
-            theta_range.append(i / 10)
         return theta_range
 
     # convert degrees to servo angles
@@ -319,7 +336,7 @@ def update(n, t):
     callback(1)
 
 
-arm = Arm(93, 87, 139, Arm.default_optimization)
+arm = Arm(93, 87, 139, Arm.default_optimization, implementation)
 
 fig = plt.figure()
 ax = Axes3D(fig)
