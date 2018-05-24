@@ -1,1 +1,6 @@
 /test/
+.idea/misc.xml
+.idea/modules.xml
+.idea/workspace.xml
+.idea/vcs.xml
+.idea/Robotic-Arm-Control.iml
