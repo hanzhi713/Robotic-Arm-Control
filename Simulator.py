@@ -8,7 +8,7 @@ from tkinter import *
 import numpy as np
 from numpy.linalg import norm
 
-half_pi = pi / 2  # Why? why? why?
+half_pi = pi / 2 
 status = input("Enter either a or t: \n")
 
 class Arm:
