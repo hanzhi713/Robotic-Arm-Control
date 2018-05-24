@@ -38,18 +38,22 @@ Let
 <img src="http://latex.codecogs.com/svg.latex?\large&space;\begin{array}{l}&space;A&space;=&space;l_2^2&plus;l_3^2&space;-&space;l_1^2&space;-&space;a^2&space;-&space;b^2&space;\\\\&space;A&space;&plus;&space;2ma&space;=&space;-2b\sqrt{l_1^2&space;-&space;m^2}&space;\\\\&space;A^2&space;&plus;&space;4Aam&space;&plus;&space;4a^2m^2&space;=&space;4b^2(l_1^2-m^2)\\\\&space;4(a^2&plus;b^2)m^2&space;&plus;&space;4Aam&space;-&space;4b^2l_1^2&space;&plus;&space;A^2&space;=&space;0&space;\\\\&space;m&space;=&space;\frac{-4Aa\pm&space;\sqrt{16A^2a^2&space;-&space;16(a^2&plus;b^2)(A^2-&space;4b^2l_1^2)}}{2*4(a^2&plus;b^2)}&space;=&space;\frac{-Aa\pm&space;b\sqrt{4l_1^2(a^2&space;&plus;&space;b^2)-A^2}}{2(a^2&plus;b^2)}&space;\end{array}" title="\large \begin{array}{l} A = l_2^2+l_3^2 - l_1^2 - a^2 - b^2 \\\\ A + 2ma = -2b\sqrt{l_1^2 - m^2} \\\\ A^2 + 4Aam + 4a^2m^2 = 4b^2(l_1^2-m^2)\\\\ 4(a^2+b^2)m^2 + 4Aam - 4b^2l_1^2 + A^2 = 0 \\\\ m = \frac{-4Aa\pm \sqrt{16A^2a^2 - 16(a^2+b^2)(A^2- 4b^2l_1^2)}}{2*4(a^2+b^2)} = \frac{-Aa\pm b\sqrt{4l_1^2(a^2 + b^2)-A^2}}{2(a^2+b^2)} \end{array}" />
 </p>
 Similarly, one could take equal at the right to obtain two roots
-
+<p>
 <img src="http://latex.codecogs.com/svg.latex?\large&space;\begin{array}{l}&space;\large&space;B&space;=&space;l_2^2&plus;l_3^2&space;&plus;&space;2l_2l_3&space;-&space;l_1^2&space;-&space;a^2&space;-&space;b^2\\\\&space;m&space;=&space;\frac{-Ba\pm&space;b\sqrt{4l_1^2(a^2&space;&plus;&space;b^2)-B^2}}{2(a^2&plus;b^2)}&space;\end{array}" title="\large \begin{array}{l} \large B = l_2^2+l_3^2 + 2l_2l_3 - l_1^2 - a^2 - b^2\\\\ m = \frac{-Ba\pm b\sqrt{4l_1^2(a^2 + b^2)-B^2}}{2(a^2+b^2)} \end{array}" />
-
+</p>
+<p>
 Let
-
+<br/>
 <img src="http://latex.codecogs.com/svg.latex?\large&space;\begin{array}{l}&space;m_1&space;=&space;\frac{-Aa&space;-&space;b\sqrt{4l_1^2(a^2&space;&plus;&space;b^2)-A^2}}{2(a^2&plus;b^2)}\\\\&space;m_2&space;=&space;\frac{-Aa&space;&plus;&space;b\sqrt{4l_1^2(a^2&space;&plus;&space;b^2)-A^2}}{2(a^2&plus;b^2)}\\\\&space;m_3&space;=&space;\frac{-Ba&space;-&space;b\sqrt{4l_1^2(a^2&space;&plus;&space;b^2)-B^2}}{2(a^2&plus;b^2)}\\\\&space;m_4&space;=&space;\frac{-Ba&space;&plus;&space;b\sqrt{4l_1^2(a^2&space;&plus;&space;b^2)-B^2}}{2(a^2&plus;b^2)}&space;\end{array}" title="\large \begin{array}{l} m_1 = \frac{-Aa - b\sqrt{4l_1^2(a^2 + b^2)-A^2}}{2(a^2+b^2)}\\\\ m_2 = \frac{-Aa + b\sqrt{4l_1^2(a^2 + b^2)-A^2}}{2(a^2+b^2)}\\\\ m_3 = \frac{-Ba - b\sqrt{4l_1^2(a^2 + b^2)-B^2}}{2(a^2+b^2)}\\\\ m_4 = \frac{-Ba + b\sqrt{4l_1^2(a^2 + b^2)-B^2}}{2(a^2+b^2)} \end{array}" />
-
+<br/>
 The range of m is the intersection of these regions
-
+<br/>
+<br/>
 <img src="http://latex.codecogs.com/svg.latex?\large&space;m&space;\in&space;\left&space;(&space;[-l_1,&space;m_1]&space;\cap&space;[m_2,&space;l_1]&space;\cap&space;[m_3,&space;m_4]&space;\right&space;)" title="\large m \in \left ( [-l_1, m_1] \cap [m_2, l_1] \cap [m_3, m_4] \right )" />
 
 Any m belongs to this set will be a solution. Given a particular m, the angles of servos could be calculated through a series of geometric derivations.
+</p>
+
 
 ## Start interlude
 
