@@ -30,8 +30,39 @@ So the inequality could be formulated:
 
 Any m that satisfies this inequality will be a solution. Given a particular m, the angles of servos could be calculated through a series of geometric derivations.
 
-<img src="demo/angle-solution.svg"/>
+## Start interlude
 
+Well, there is another more straightforward way to calculate the angle and the coordinates.
+
+Suppose the angle subtended by the x-axis and DO is &phi; and the distance DO equals k. We can write the above formula into such:
+<p>
+<img src="http://latex.codecogs.com/svg.latex?\large&space;\large&space;\begin{array}{l}&space;l_2^2&plus;l_3^2&space;\leq(k\cos{\varphi}-l_1\sin{\theta_1})^2&plus;(k\sin{\varphi}-l_1\cos{\theta_1})^2\leq&space;(l_2&plus;l_3)^2\\\\&space;\frac{k^2&plus;l_1^2-(l_2&plus;l_3)^2}{2kl_1}&space;\leq{sin(\theta_1&plus;\varphi)\leq{\frac{k^2&plus;l_1^2-l_2^2-l_3^2}{2kl_1}}}&space;\end{array}" title="\large \large \begin{array}{l} l_2^2+l_3^2 \leq(k\cos{\varphi}-l_1\sin{\theta_1})^2+(k\sin{\varphi}-l_1\cos{\theta_1})^2\leq (l_2+l_3)^2\\\\ \frac{k^2+l_1^2-(l_2+l_3)^2}{2kl_1} \leq{sin(\theta_1+\varphi)\leq{\frac{k^2+l_1^2-l_2^2-l_3^2}{2kl_1}}} \end{array}" />
+</p>
+<p>
+At this point, naturally one will think of using the arcsin to solve the inequality. However, we have to make sure that the left side of the inequality is no smaller than -1, and the right side of the inequality is no larger than 1. Besides, as:
+</p>
+<img src="http://latex.codecogs.com/svg.latex?\large&space;\large&space;\begin{array}&space;{lcr}&space;\theta_1\in[-90\degree,&space;90\degree]&space;&&space;\varphi\in[0\degree,&space;90\degree]&space;&&space;\theta_1&plus;\varphi\in[-90\degree,&space;180\degree]&space;\end{array}" title="\large \large \begin{array} {lcr} \theta_1\in[-90\degree, 90\degree] & \varphi\in[0\degree, 90\degree] & \theta_1+\varphi\in[-90\degree, 180\degree] \end{array}" />
+<p>
+we have to make sure the angles are in the correct intervals.
+
+Let's suppose the above inequality is in the interval [-1, 1]. Then
+<br/>
+<br/>
+<img src="http://latex.codecogs.com/svg.latex?\large&space;\arcsin\left(\frac{k^2&plus;l_1^2-(l_2&plus;l_3)^2}{2kl_1}\right)&space;\leq\theta_1&plus;\varphi&space;\leq\arcsin\left(\frac{k^2&plus;l_1^2-l_2^2-l_3^2}{2kl_1}\right)" title="\large \arcsin\left(\frac{k^2+l_1^2-(l_2+l_3)^2}{2kl_1}\right) \leq\theta_1+\varphi \leq\arcsin\left(\frac{k^2+l_1^2-l_2^2-l_3^2}{2kl_1}\right)" />
+</p>
+<p>
+Let
+<br/>
+<br/>
+<img src="http://latex.codecogs.com/svg.latex?\large&space;\begin{array}{lr}&space;\delta_1=\arcsin\left(\frac{k^2&plus;l_1^2-(l_2&plus;l_3)^2}{2kl_1}\right)&space;&&space;\delta_2&space;=&space;\arcsin\left(\frac{k^2&plus;l_1^2-l_2^2-l_3^2}{2kl_1}\right)&space;\end{array}" title="\large \begin{array}{lr} \delta_1=\arcsin\left(\frac{k^2+l_1^2-(l_2+l_3)^2}{2kl_1}\right) & \delta_2 = \arcsin\left(\frac{k^2+l_1^2-l_2^2-l_3^2}{2kl_1}\right) \end{array}" />
+<br/>
+<br/>
+We also need to check whether 180 - &delta;1 and 180 - &delta;2 is also an interval for &theta;1 + &phi;. To make sure that everything is proper, we need to check where 90 + &phi; lies inside the interval. 90 + &phi; is a limit that cannot be exceeded. Nevertheless, using this way we can find the range of &theta;1, and from then on we can easily find other angles.
+</p>
+
+## End interlude
+
+<img src="demo/angle-solution.svg"/>
 <br/>
 
 <img src="http://latex.codecogs.com/svg.latex?\large&space;\large&space;\begin{array}{l}&space;\theta_1&space;=&space;\arcsin{\frac{m}{l_1}}&space;\\&space;\\&space;\theta_2&space;=&space;\frac{\pi}{2}&space;-&space;\theta_1&space;-&space;\alpha&space;-&space;\beta&space;\\&space;\\&space;\theta_3&space;=&space;\pi&space;-&space;B\widehat{C}D&space;\end{array}" title="\large \large \begin{array}{l} \theta_1 = \arcsin{\frac{m}{l_1}} \\ \\ \theta_2 = \frac{\pi}{2} - \theta_1 - \alpha - \beta \\ \\ \theta_3 = \pi - B\widehat{C}D \end{array}" />
