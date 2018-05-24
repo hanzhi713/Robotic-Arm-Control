@@ -1,18 +1,18 @@
 from math import *
 import matplotlib
-matplotlib.use("TkAgg") #可能Mac特有的要求，必须要很明显地说matplotlib用tkinter
+
+matplotlib.use("TkAgg")  # 可能Mac特有的要求，必须要很明显地说matplotlib用tkinter
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 from tkinter import *
 import numpy as np
 from numpy.linalg import norm
 
-half_pi = pi / 2 #Why? why? why?
-
+half_pi = pi / 2  # Why? why? why?
 status = input("Enter either a or t: \n")
 
 class Arm:
-    steps = 100
+    steps = 10
     default_position = np.array([90, 90, 90, 90, 90, 45], np.float64)
 
     @staticmethod
@@ -23,7 +23,7 @@ class Arm:
     def minimum_change(d1, d2, d3, p):
         return norm(90 - (np.rad2deg(np.array([d1, d2, d3])) - p[:3]), ord=2)
 
-    def __init__(self, r1, r2, r3, opt=default_optimization):
+    def __init__(self, r1, r2, r3, opt=default_optimization, implementation="t"):
         """
           :param r1: Length of the first segment
           :param r2: Length of the second segment
@@ -37,8 +37,16 @@ class Arm:
         self.position = Arm.default_position.copy()
 
         # servo degree in radians
-        self.rad_pos = np.array([half_pi, half_pi, half_pi, half_pi, half_pi, pi / 4], dtype = np.float64)
+        self.rad_pos = np.array([half_pi, half_pi, half_pi, half_pi, half_pi, pi / 4], dtype=np.float64)
         self.opt = opt
+
+        if implementation == "t":
+            self.solve_three = self.t_solve_angle
+        elif implementation == "ax":
+            self.solve_three = self.ax_solve_angle
+        elif implementation == "tt":
+            self.solve_three = self.t_solve_angle
+            self.get_m_range = self.get_m_range_traverse
 
 
     def get_radians(self, x, y, z):
@@ -55,17 +63,12 @@ class Arm:
         d0 = atan2(y, x)
         # if not pi * 0.75 < d0 < -pi * 0.25:
         #     raise Exception("Out of range!")
-
-        d1, d2, d3 = self.solve_three(norm((x, y), ord=2), z)
-        return np.array((d0, d1, d2, d3), dtype=np.float64)
-
-    def ax_get_radians(self, x, y, z):
-        distance = norm((x, y, z), ord=2)
-        if distance > self.len:
-            raise Exception("Too far to reach!")
-        d0 = atan2(y, x)
-        d1, d2, d3 = self.solve_angle(norm((x, y), ord=2), z)
-        return np.array((d0, d1, d2, d3), dtype=np.float64)
+        if status =='t':
+            d1, d2, d3 = self.solve_three(norm((x, y), ord=2), z)
+            return np.array((d0, d1, d2, d3), dtype=np.float64)
+        else:
+            d1, d2, d3 = self.ax_solve_angle(norm((x, y), ord=2), z)
+            return np.array((d0, d1, d2, d3), dtype=np.float64)
 
     def get_degrees(self, x, y, z):
         """
@@ -77,32 +80,20 @@ class Arm:
         """
         self.rads_to_degs(self.get_radians(x, y, z))
 
-
     @staticmethod
     def rads_to_degs(rads):
         return np.round(np.rad2deg(rads))
 
-
-    def solve_three(self, a, b):
+    def t_solve_angle(self, a, b):
         """
         :param a: x coordinate in the plane
         :param b: y coordinate in the plane
         :return: a list of degrees
         """
-        ra = self.get_m_range(a, b)
-        # print(ra)
-        if len(ra) == 2:
-            if ra[0] < -self.l1: ra[0] = -self.l1
-            if ra[1] > self.l1: ra[1] = self.l1
-            rg = np.arange(ra[0] + 1 / Arm.steps, ra[1], 1 / Arm.steps)
-        elif len(ra) == 4:
-            rg = np.concatenate((np.arange(ra[0] + 1 / Arm.steps, ra[1], 1 / Arm.steps),
-                                 np.arange(ra[2] + 1 / Arm.steps, ra[3], 1 / Arm.steps)))
-        else:
-            raise Exception('!!!')
 
         s = inf
         rs = None
+        rg = self.get_m_range(a, b)
         for m in rg:
             d1 = asin(m / self.r1)
             n = sqrt(self.r1 ** 2 - m ** 2)
@@ -120,19 +111,18 @@ class Arm:
                 rs = d1, d2, d3
         return rs
 
+    def get_m_range_traverse(self, a, b):
+        rg = []
+        c1 = norm((self.r2, self.r3), ord=2)
+        c2 = (self.r2 + self.r3) ** 2
+        for i in range(-self.r1 * Arm.steps, self.r1 * Arm.steps):
+            m = i / Arm.steps
+            v = (a - m) ** 2 + (b - sqrt(self.r1 ** 2 - m ** 2)) ** 2
+            if c1 < v < c2:
+                rg.append(m)
+        return rg
 
     def get_m_range(self, a, b):
-        # rg = []
-        # c1 = norm((self.l2, self.l3), ord=2)
-        # c2 = (self.l2 + self.l3) ** 2
-        # for i in range(-self.l1 * Arm.steps, self.l1 * Arm.steps):
-        #     m = i / Arm.steps
-        #     v = (a - m) ** 2 + (b - sqrt(self.l1 ** 2 - m ** 2)) ** 2
-        #     if c1 < v < c2:
-        #         rg.append(m)
-
-        # return rg
-
         l1 = self.r1
         l2 = self.r2
         l3 = self.r3
@@ -157,19 +147,19 @@ class Arm:
         if d1 > 0 and d2 > 0:
             if m12 < m21 or m11 > m22:
                 print(1)
-                return m21, m22
+                return self.process_m_range([m21, m22])
 
             elif m11 < m21 < m12 < m22:
                 print(2)
-                return m12, m22
+                return self.process_m_range([m12, m22])
 
             elif m21 < m11 and m12 < m22:
                 print(3)
-                return m21, m11, m12, m22
+                return self.process_m_range([m21, m11, m12, m22])
 
             elif m21 < m11 < m22 < m12:
                 print(4)
-                return m21, m11
+                return self.process_m_range([m21, m11])
 
             # I guess this isn't possible
             elif m11 < m21 and m12 > m22:
@@ -178,17 +168,29 @@ class Arm:
 
         elif d1 > 0 and d2 < 0:
             print(6)
-            return -self.l1, m11, m12, self.l1
+            return self.process_m_range([-self.l1, m11, m12, self.l1])
 
         elif d1 < 0 and d2 > 0:
             print(7)
-            return m21, m22
+            return self.process_m_range([m21, m22])
 
         else:
             print(8)
+            return []
 
-    #mine
-    def solve_angle(self, a, b):
+    def process_m_range(self, m_range):
+        if len(m_range) == 2:
+            if m_range[0] < -self.r1: m_range[0] = -self.r1
+            if m_range[1] > self.r1: m_range[1] = self.r1
+            return np.arange(m_range[0] + 1 / Arm.steps, m_range[1], 1 / Arm.steps)
+        elif len(m_range) == 4:
+            return np.concatenate((np.arange(m_range[0] + 1 / Arm.steps, m_range[1], 1 / Arm.steps),
+                                 np.arange(m_range[2] + 1 / Arm.steps, m_range[3], 1 / Arm.steps)))
+        else:
+            raise Exception('!!!')
+
+    # For Alex's implementation
+    def ax_solve_angle(self, a, b):
         theta_range = self.get_angle_range(a, b)
         s = inf
         rs = None
@@ -212,8 +214,7 @@ class Arm:
                 continue
         return rs
 
-
-
+    # For Alex's implementation
     def get_angle_range(self, a, b):
         theta_range = []
         k = norm((a, b), ord=2)  # distance
@@ -224,7 +225,7 @@ class Arm:
         m_min = (k ** 2 + self.r1 ** 2 - lim_max) / (2 * k * self.r1)
         m_max = (k ** 2 + self.r1 ** 2 - lim_min) / (2 * k * self.r1)
 
-        if m_min < -1: # Will this be a case?
+        if m_min < -1:  # Will this be a case?
             m_min = -1
         angle_1 = asin(m_min)
 
@@ -246,8 +247,6 @@ class Arm:
             angle_3 = pi - angle_2
             angle_4 = pi / 2 + phi
 
-
-
         angle_1 = angle_1 - phi
         angle_2 = angle_2 - phi
 
@@ -263,8 +262,6 @@ class Arm:
                 theta_range.append(i / 10)
 
         return theta_range
-
-
 
     # convert degrees to servo angles
     @staticmethod
@@ -286,13 +283,8 @@ class Arm:
 
     # Update the joint angles so that the arm can reach (x, y, z)
     def goto(self, x, y, z):
-        if status == 't':
-            self.rad_pos = self.get_radians(x, y, z)
-        else:
-            self.rad_pos = self.ax_get_radians(x, y, z)
-        self.position = np.concatenate((self.cov_degs(self.rads_to_degs(self.rad_pos)), self.position[4:]), axis = 0)
-
-
+        self.rad_pos = self.get_radians(x, y, z)
+        self.position = np.concatenate((self.cov_degs(self.rads_to_degs(self.rad_pos)), self.position[4:]), axis=0)
 
     # get coordinates of each joint in three dimensional space
     def get_coordinates(self):
@@ -309,28 +301,21 @@ class Arm:
         z3 = z2 + sin(d3) * r3
         return [0, x1, x2, x3], [0, y1, y2, y3], [0, z1, z2, z3]
 
-    def ax_get_coordinates(self):
-        d0 = self.rad_pos[0]
-        d1 = pi / 2 - self.rad_pos[1]
-        x1, y1 = cos(d1) * self.r1 * cos(d0), cos(d1) * self.r1 * sin(d0)
-        z1 = sin(d1) * self.r1
-        d2 = d1 - self.rad_pos[2]
-        x2, y2 = cos(d2) * self.r2 * cos(d0) + x1, cos(d2) * self.r2 * sin(d0) + y1
-        z2 = z1 + sin(d2) * self.r2
-        r3 = self.r3
-        d3 = d2 - self.rad_pos[3]
-        x3, y3 = cos(d3) * r3 * cos(d0) + x2, cos(d3) * r3 * sin(d0) + y2
-        z3 = z2 + sin(d3) * r3
-        return [0, x1, x2, x3], [0, y1, y2, y3], [0, z1, z2, z3]
+    def write(self, sr):
+        sr.write(self.position)
 
+write_serial = False
+if write_serial:
+    from Protocol import ServoProtocol
 
+    sr = ServoProtocol('COM3')
 
 def callback(e):
-    global arm, x, y, z, sr, write_serial, status
+    global arm, x, y, z, sr, write_serial
     arm.goto(x, y, z)
+    xs, ys, zs = arm.get_coordinates()
+    ax.clear()
     if status == 't':
-        xs, ys, zs = arm.get_coordinates()
-        ax.clear()
         ax.set_xlabel('X / mm')
         ax.set_xlim(-20, 200)
         ax.set_ylabel('Y / mm')
@@ -340,16 +325,18 @@ def callback(e):
         ax.plot(xs, ys, zs, linewidth=2.5, marker='*', markersize=8, markerfacecolor='y')
         ax.scatter(x, y, z, c='r', s=100, marker='o')
     else:
-        xa, ya, za = arm.ax_get_coordinates()
-        axx.clear()
-        axx.set_xlabel('X / mm')
-        axx.set_xlim(-20, 200)
-        axx.set_ylabel('Y / mm')
-        axx.set_ylim(-20, 200)
-        axx.set_zlabel('Z / mm')
-        axx.set_zlim(0, 200)
-        axx.plot(xa, ya, za, color='#FF8C00', linewidth=2.5, marker='*', markersize=8, markerfacecolor='#FFFF00')
-        axx.scatter(x, y, z, c='r', s=100, marker='o')
+        ax.set_xlabel('X / mm')
+        ax.set_xlim(-20, 200)
+        ax.set_ylabel('Y / mm')
+        ax.set_ylim(-20, 200)
+        ax.set_zlabel('Z / mm')
+        ax.set_zlim(0, 200)
+        ax.plot(xs, ys, zs, color='#FF8C00', linewidth=2.5, marker='*', markersize=8, markerfacecolor='#FFFF00')
+        ax.scatter(x, y, z, c='r', s=100, marker='o')
+
+    
+    if write_serial:
+        arm.write(sr)
 
 
 def update(n, t):
@@ -363,21 +350,15 @@ def update(n, t):
     callback(1)
 
 
-
 arm = Arm(93, 87, 139, Arm.default_optimization)
 
-
 fig = plt.figure()
-if status == 't':
-    ax = Axes3D(fig)
-else:
-    axx = Axes3D(fig)
+ax = Axes3D(fig)
 
 plt.ion()
 x = 150
 y = 150
 z = 150
-
 
 root = Tk()
 root.title('Robotic Arm Control Simulation')
