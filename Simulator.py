@@ -11,6 +11,7 @@ from numpy.linalg import norm
 half_pi = pi / 2
 implementation = input("Enter tt, ax or t: \n")
 
+
 class Arm:
     steps = 10
     default_position = np.array([90, 90, 90, 90, 90, 45], np.float64)
@@ -40,14 +41,18 @@ class Arm:
         self.rad_pos = np.array([half_pi, half_pi, half_pi, half_pi, half_pi, pi / 4], dtype=np.float64)
         self.opt = opt
 
+        # Stands for Tom: Hanzhi Zhou's implementation by analytically solve the inequality using algebraic method
         if implementation == "t":
             self.solve_three = self.t_solve_angle
+
+        # Stands for Alex: Yuhao Zhou's implementation by analytically solve the inequality using angles
         elif implementation == "ax":
             self.solve_three = self.ax_solve_angle
+
+        # Stands for Tom Traversal: Hanzhi Zhou's original implementation by traversing all possible values of m
         elif implementation == "tt":
             self.solve_three = self.t_solve_angle
             self.get_m_range = self.get_m_range_traverse
-
 
     def get_radians(self, x, y, z):
         """
@@ -92,20 +97,23 @@ class Arm:
         rs = None
         rg = self.get_m_range(a, b)
         for m in rg:
-            d1 = asin(m / self.r1)
-            n = sqrt(self.r1 ** 2 - m ** 2)
-            temp = (a - m) ** 2 + (b - n) ** 2
-            d2 = half_pi - d1 - acos((self.r2 ** 2 + temp - self.r3 ** 2) / (2 * self.r2 * sqrt(temp))) - atan(
-                (b - n) / (a - m))
-            if not -half_pi < d2 < half_pi:
+            try:
+                d1 = asin(m / self.r1)
+                n = sqrt(self.r1 ** 2 - m ** 2)
+                temp = (a - m) ** 2 + (b - n) ** 2
+                d2 = half_pi - d1 - acos((self.r2 ** 2 + temp - self.r3 ** 2) / (2 * self.r2 * sqrt(temp))) - atan(
+                    (b - n) / (a - m))
+                if not -half_pi < d2 < half_pi:
+                    continue
+                d3 = pi - acos((self.r2 ** 2 + self.r3 ** 2 - temp) / (2 * self.r2 * self.r3))
+                if not -half_pi < d3 < half_pi:
+                    continue
+                opt_val = self.opt(d1, d2, d3, self.position)
+                if opt_val < s:
+                    s = opt_val
+                    rs = d1, d2, d3
+            except:
                 continue
-            d3 = pi - acos((self.r2 ** 2 + self.r3 ** 2 - temp) / (2 * self.r2 * self.r3))
-            if not -half_pi < d3 < half_pi:
-                continue
-            opt_val = self.opt(d1, d2, d3, self.position)
-            if opt_val < s:
-                s = opt_val
-                rs = d1, d2, d3
         return rs
 
     def get_m_range_traverse(self, a, b):
@@ -132,48 +140,61 @@ class Arm:
         if d1 > 0:
             m11 = (-A * a - b * sqrt(d1)) / (2 * temp)
             m12 = (-A * a + b * sqrt(d1)) / (2 * temp)
+            print(m11, m12)
 
-        B = A + 2 * l2 * l3
+        B = -A - 2 * l2 * l3
         d2 = 4 * temp * l1 ** 2 - B ** 2
 
-        if d2 > 0:
-            m21 = (-B * a - b * sqrt(d2)) / (2 * temp)
-            m22 = (-B * a + b * sqrt(d2)) / (2 * temp)
+        u = B / (2*a)
 
-        # find the intersection between [-oo, m11], [m21, m22] and [m12, +oo]
-        if d1 > 0 and d2 > 0:
-            if m12 < m21 or m11 > m22:
-                print(1)
+        if d2 > 0:
+            m21 = (B * a - b * sqrt(d2)) / (2 * temp)
+            m22 = (B * a + b * sqrt(d2)) / (2 * temp)
+
+            print(m21, m22)
+
+        print(u - l1)
+
+        if b > 0:
+            # find the intersection between [-oo, m11], [m21, m22] and [m12, +oo]
+            if d1 > 0 and d2 > 0:
+                if m12 < m21 or m11 > m22:
+                    print(1)
+                    return self.process_m_range([m21, m22])
+
+                elif m11 < m21 < m12 < m22:
+                    print(2)
+                    return self.process_m_range([m12, m22])
+
+                elif m21 < m11 and m12 < m22:
+                    print(3)
+                    return self.process_m_range([m21, m11, m12, m22])
+
+                elif m21 < m11 < m22 < m12:
+                    print(4)
+                    return self.process_m_range([m21, m11])
+
+                elif m11 < m21 and m12 > m22:
+                    print(5)
+                    return []
+
+            elif d1 > 0 and d2 < 0:
+                print(6)
+                return self.process_m_range([-self.r1, m11, m12, self.r1])
+
+            elif d1 < 0 and d2 > 0:
+                print(7)
                 return self.process_m_range([m21, m22])
 
-            elif m11 < m21 < m12 < m22:
-                print(2)
-                return self.process_m_range([m12, m22])
-
-            elif m21 < m11 and m12 < m22:
-                print(3)
-                return self.process_m_range([m21, m11, m12, m22])
-
-            elif m21 < m11 < m22 < m12:
-                print(4)
-                return self.process_m_range([m21, m11])
-
-            # I guess this isn't possible
-            elif m11 < m21 and m12 > m22:
-                print(5)
+            else:
+                print(8)
                 return []
-
-        elif d1 > 0 and d2 < 0:
-            print(6)
-            return self.process_m_range([-self.l1, m11, m12, self.l1])
-
-        elif d1 < 0 and d2 > 0:
-            print(7)
-            return self.process_m_range([m21, m22])
-
         else:
-            print(8)
-            return []
+            print(0)
+            m1 = u
+            m2 = -A / (2 * a)
+            print(m1, m2)
+            return self.process_m_range([m1, m2])
 
     def process_m_range(self, m_range):
         if len(m_range) == 2:
@@ -182,11 +203,11 @@ class Arm:
             return np.arange(m_range[0] + 1 / Arm.steps, m_range[1], 1 / Arm.steps)
         elif len(m_range) == 4:
             return np.concatenate((np.arange(m_range[0] + 1 / Arm.steps, m_range[1], 1 / Arm.steps),
-                                 np.arange(m_range[2] + 1 / Arm.steps, m_range[3], 1 / Arm.steps)))
+                                   np.arange(m_range[2] + 1 / Arm.steps, m_range[3], 1 / Arm.steps)))
         else:
             raise Exception('!!!')
 
-        # For Alex's implementation
+    # For Alex's implementation
     def ax_solve_angle(self, a, b):
         theta_range = self.get_angle_range(a, b)
         s = inf
@@ -301,11 +322,13 @@ class Arm:
     def write(self, sr):
         sr.write(self.position)
 
+
 write_serial = False
 if write_serial:
     from Protocol import ServoProtocol
 
     sr = ServoProtocol('COM3')
+
 
 def callback(e):
     global arm, x, y, z, sr, write_serial
@@ -336,7 +359,7 @@ def update(n, t):
     callback(1)
 
 
-arm = Arm(93, 87, 139, Arm.default_optimization, implementation)
+arm = Arm(93, 87, 139, Arm.minimum_change, implementation)
 
 fig = plt.figure()
 ax = Axes3D(fig)
