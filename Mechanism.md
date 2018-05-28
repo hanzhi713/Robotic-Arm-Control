@@ -52,7 +52,7 @@ Let
 
 Then
 
-<img src="http://latex.codecogs.com/svg.latex?\large&space;\left\{&space;\begin{array}{ll}&space;m&space;\in&space;\left&space;(&space;[-l_1,&space;m_1]&space;\cap&space;[m_2,&space;l_1]&space;\cap&space;[m_3,&space;m_4]&space;\right&space;)\&space;b&space;\neq&space;0\&space;and\&space;B-2am&space;>&space;0\\\\&space;m&space;\in&space;\left&space;(&space;[-l_1,&space;m_1]&space;\cap&space;[m_2,&space;l_1]\right&space;)\&space;b&space;\neq&space;0\&space;and\&space;B-2am&space;<&space;0\\\\&space;m&space;\in&space;[\frac{B}{2a},\frac{-A}{2a}]\&space;b=0&space;\end{array}&space;\right." title="\large \left\{ \begin{array}{ll} m \in \left ( [-l_1, m_1] \cap [m_2, l_1] \cap [m_3, m_4] \right )\ b \neq 0\ and\ B-2am > 0\\\\ m \in \left ( [-l_1, m_1] \cap [m_2, l_1]\right )\ b \neq 0\ and\ B-2am < 0\\\\ m \in [\frac{B}{2a},\frac{-A}{2a}]\ b=0 \end{array} \right." />
+<img src="http://latex.codecogs.com/svg.latex?\large&space;\left\{&space;\begin{array}{ll}&space;m&space;\in&space;\left&space;(&space;([-l_1,&space;m_1]&space;\cup&space;[m_2,&space;l_1])&space;\cap&space;([m_3,&space;m_4]&space;\cup&space;[\frac{B}{2a},&space;l_1])&space;\right&space;)\&space;b&space;\neq&space;0&space;\\\\&space;m&space;\in&space;[\frac{B}{2a},\frac{-A}{2a}]\&space;b=0&space;\end{array}&space;\right." title="\large \left\{ \begin{array}{ll} m \in \left ( ([-l_1, m_1] \cup [m_2, l_1]) \cap ([m_3, m_4] \cup [\frac{B}{2a}, l_1]) \right )\ b \neq 0 \\\\ m \in [\frac{B}{2a},\frac{-A}{2a}]\ b=0 \end{array} \right." />
 
 Any m belongs to this set will be a solution. Given a particular m, the angles of servos could be calculated through a series of geometric derivations.
 
@@ -62,7 +62,7 @@ Well, there is another more straightforward way to calculate the angle and the c
 
 Suppose the angle subtended by the x-axis and DO is &phi; and the distance DO equals k. We can write the above formula into such:
 <p>
-<img src="http://latex.codecogs.com/svg.latex?\large&space;\begin{array}{l}&space;l_2^2&plus;l_3^2&space;\leq(k\cos{\varphi}-l_1\sin{\theta_1})^2&plus;(k\sin{\varphi}-l_1\cos{\theta_1})^2\leq&space;(l_2&plus;l_3)^2\\\\&space;\frac{k^2&plus;l_1^2-(l_2&plus;l_3)^2}{2kl_1}&space;\leq{sin(\theta_1&plus;\varphi)\leq{\frac{k^2&plus;l_1^2-l_2^2-l_3^2}{2kl_1}}}&space;\end{array}" title="\large \begin{array}{l} l_2^2+l_3^2 \leq(k\cos{\varphi}-l_1\sin{\theta_1})^2+(k\sin{\varphi}-l_1\cos{\theta_1})^2\leq (l_2+l_3)^2\\\\ \frac{k^2+l_1^2-(l_2+l_3)^2}{2kl_1} \leq{sin(\theta_1+\varphi)\leq{\frac{k^2+l_1^2-l_2^2-l_3^2}{2kl_1}}} \end{array}" />
+<img src="http://latex.codecogs.com/svg.latex?\large&space;\begin{array}{l}&space;l_2^2&plus;l_3^2&space;\leq(k\cos{\varphi}-l_1\sin{\theta_1})^2&plus;(k\sin{\varphi}-l_1\cos{\theta_1})^2\leq&space;(l_2&plus;l_3)^2\\\\&space;\frac{k^2&plus;l_1^2-(l_2&plus;l_3)^2}{2kl_1}&space;\leq{\sin(\theta_1&plus;\varphi)\leq{\frac{k^2&plus;l_1^2-l_2^2-l_3^2}{2kl_1}}}&space;\end{array}" title="\large \begin{array}{l} l_2^2+l_3^2 \leq(k\cos{\varphi}-l_1\sin{\theta_1})^2+(k\sin{\varphi}-l_1\cos{\theta_1})^2\leq (l_2+l_3)^2\\\\ \frac{k^2+l_1^2-(l_2+l_3)^2}{2kl_1} \leq{\sin(\theta_1+\varphi)\leq{\frac{k^2+l_1^2-l_2^2-l_3^2}{2kl_1}}} \end{array}" />
 </p>
 <p>
 At this point, naturally one will think of using the arcsin to solve the inequality. However, we have to make sure that the left side of the inequality is no smaller than -1, and the right side of the inequality is no larger than 1. Besides, as:

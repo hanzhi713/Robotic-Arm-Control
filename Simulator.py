@@ -14,6 +14,7 @@ implementation = input("Enter tt, ax or t: \n")
 
 class Arm:
     steps = 10
+    step_length = 1 / steps
     default_position = np.array([90, 90, 90, 90, 90, 45], np.float64)
 
     @staticmethod
@@ -24,7 +25,7 @@ class Arm:
     def minimum_change(d1, d2, d3, p):
         return norm(90 - (np.rad2deg(np.array([d1, d2, d3])) - p[:3]), ord=2)
 
-    def __init__(self, r1, r2, r3, opt=default_optimization, implementation="t"):
+    def __init__(self, r1, r2, r3, opt=default_optimization, implementation="ax"):
         """
           :param r1: Length of the first segment
           :param r2: Length of the second segment
@@ -137,75 +138,37 @@ class Arm:
         temp = a ** 2 + b ** 2
         d1 = 4 * temp * l1 ** 2 - A ** 2
 
+        m11 = 0
+        m12 = 0
+        m21 = 0
+        m22 = 0
+
         if d1 > 0:
-            m11 = (-A * a - b * sqrt(d1)) / (2 * temp)
-            m12 = (-A * a + b * sqrt(d1)) / (2 * temp)
-            print(m11, m12)
+            m11 = int((-A * a - b * sqrt(d1)) / (2 * temp) * Arm.steps)
+            m12 = int((-A * a + b * sqrt(d1)) / (2 * temp) * Arm.steps)
+            # print(m11, m12)
 
         B = -A - 2 * l2 * l3
         d2 = 4 * temp * l1 ** 2 - B ** 2
 
-        u = B / (2*a)
+        u = int(B / (2 * a) * Arm.steps)
 
         if d2 > 0:
-            m21 = (B * a - b * sqrt(d2)) / (2 * temp)
-            m22 = (B * a + b * sqrt(d2)) / (2 * temp)
+            m21 = int((B * a - b * sqrt(d2)) / (2 * temp) * Arm.steps)
+            m22 = int((B * a + b * sqrt(d2)) / (2 * temp) * Arm.steps)
+            # print(m21, m22)
 
-            print(m21, m22)
-
-        print(u - l1)
+        # print(u - l1)
 
         if b > 0:
-            # find the intersection between [-oo, m11], [m21, m22] and [m12, +oo]
-            if d1 > 0 and d2 > 0:
-                if m12 < m21 or m11 > m22:
-                    print(1)
-                    return self.process_m_range([m21, m22])
-
-                elif m11 < m21 < m12 < m22:
-                    print(2)
-                    return self.process_m_range([m12, m22])
-
-                elif m21 < m11 and m12 < m22:
-                    print(3)
-                    return self.process_m_range([m21, m11, m12, m22])
-
-                elif m21 < m11 < m22 < m12:
-                    print(4)
-                    return self.process_m_range([m21, m11])
-
-                elif m11 < m21 and m12 > m22:
-                    print(5)
-                    return []
-
-            elif d1 > 0 and d2 < 0:
-                print(6)
-                return self.process_m_range([-self.r1, m11, m12, self.r1])
-
-            elif d1 < 0 and d2 > 0:
-                print(7)
-                return self.process_m_range([m21, m22])
-
-            else:
-                print(8)
-                return []
+            first_solutions = set(range(-l1 * Arm.steps, m11)).union(set(range(m12, l1 * Arm.steps)))
+            second_solutions = set(range(m21, m22)).union(set(range(u, l1 * Arm.steps)))
+            return np.array(list(first_solutions.intersection(second_solutions))) / Arm.steps
         else:
             print(0)
             m1 = u
             m2 = -A / (2 * a)
-            print(m1, m2)
-            return self.process_m_range([m1, m2])
-
-    def process_m_range(self, m_range):
-        if len(m_range) == 2:
-            if m_range[0] < -self.r1: m_range[0] = -self.r1
-            if m_range[1] > self.r1: m_range[1] = self.r1
-            return np.arange(m_range[0] + 1 / Arm.steps, m_range[1], 1 / Arm.steps)
-        elif len(m_range) == 4:
-            return np.concatenate((np.arange(m_range[0] + 1 / Arm.steps, m_range[1], 1 / Arm.steps),
-                                   np.arange(m_range[2] + 1 / Arm.steps, m_range[3], 1 / Arm.steps)))
-        else:
-            raise Exception('!!!')
+            return np.arange(m1 + Arm.step_length, m2, Arm.step_length)
 
     # For Alex's implementation
     def ax_solve_angle(self, a, b):
@@ -271,13 +234,13 @@ class Arm:
         c = np.rad2deg(np.array([angle_1, angle_2]))
         if angle_3 != 0 and angle_4 != 0:
             c = np.concatenate((c, np.rad2deg(np.array([angle_3, angle_4]))), axis=0)
-            for i in range(ceil(10 * c[0]), floor(10 * c[1] + 1)):
-                theta_range.append(i / 10)
-            for i in range(ceil(10 * c[2]), floor(10 * c[3] + 1)):
-                theta_range.append(i / 10)
+            for i in range(ceil(Arm.steps * c[0]), floor(Arm.steps * c[1] + 1)):
+                theta_range.append(i / Arm.steps)
+            for i in range(ceil(Arm.steps * c[2]), floor(Arm.steps * c[3] + 1)):
+                theta_range.append(i / Arm.steps)
         else:
-            for i in range(ceil(10 * c[0]), floor(10 * c[1] + 1)):
-                theta_range.append(i / 10)
+            for i in range(ceil(Arm.steps * c[0]), floor(Arm.steps * c[1] + 1)):
+                theta_range.append(i / Arm.steps)
 
         return theta_range
 
