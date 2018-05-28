@@ -35,7 +35,7 @@ This inequality could be solved analytically. Because all terms are positive, we
 We know that both sides are negative, so squaring both sides will flip the inequaliy
 
 <img src="http://latex.codecogs.com/svg.latex?&space;\begin{array}{l}A^2&space;&plus;&space;4Aam&space;&plus;&space;4a^2m^2&space;>&space;4b^2(l_1^2-m^2)\\\\&space;4(a^2&plus;b^2)m^2&space;&plus;&space;4Aam&space;-&space;4b^2l_1^2&space;&plus;&space;A^2&space;>&space;0&space;\\\\&space;m&space;=&space;\frac{-4Aa\pm&space;\sqrt{16A^2a^2&space;-&space;16(a^2&plus;b^2)(A^2-&space;4b^2l_1^2)}}{2*4(a^2&plus;b^2)}&space;=&space;\frac{-Aa\pm&space;b\sqrt{4l_1^2(a^2&space;&plus;&space;b^2)-A^2}}{2(a^2&plus;b^2)}&space;\end{array}" title=" \begin{array}{l}A^2 + 4Aam + 4a^2m^2 > 4b^2(l_1^2-m^2)\\\\ 4(a^2+b^2)m^2 + 4Aam - 4b^2l_1^2 + A^2 > 0 \\\\ m = \frac{-4Aa\pm \sqrt{16A^2a^2 - 16(a^2+b^2)(A^2- 4b^2l_1^2)}}{2*4(a^2+b^2)} = \frac{-Aa\pm b\sqrt{4l_1^2(a^2 + b^2)-A^2}}{2(a^2+b^2)} \end{array}" />
-<br/><br/>
+
 <img src="http://latex.codecogs.com/svg.latex?&space;\begin{array}{l}&space;m_1&space;=&space;\frac{-Aa&space;-&space;b\sqrt{4l_1^2(a^2&space;&plus;&space;b^2)-A^2}}{2(a^2&plus;b^2)}\\\\&space;m_2&space;=&space;\frac{-Aa&space;&plus;&space;b\sqrt{4l_1^2(a^2&space;&plus;&space;b^2)-A^2}}{2(a^2&plus;b^2)}&space;\\\\&space;m\in&space;[-l_1,&space;m_1]\cup[m_2,l_1]\&space;\textup{is\&space;the\&space;solution\&space;set}&space;\end{array}" title=" \begin{array}{l} m_1 = \frac{-Aa - b\sqrt{4l_1^2(a^2 + b^2)-A^2}}{2(a^2+b^2)}\\\\ m_2 = \frac{-Aa + b\sqrt{4l_1^2(a^2 + b^2)-A^2}}{2(a^2+b^2)} \\\\ m\in [-l_1, m_1]\cup[m_2,l_1]\ \textup{is\ the\ solution\ set} \end{array}" />
 
 Similarly,
@@ -61,28 +61,23 @@ Any m belongs to this set will be a solution. Given a particular m, the angles o
 Well, there is another more straightforward way to calculate the angle and the coordinates.
 
 Suppose the angle subtended by the x-axis and DO is &phi; and the distance DO equals k. We can write the above formula into such:
-<p>
+
 <img src="http://latex.codecogs.com/svg.latex?&space;\begin{array}{l}&space;l_2^2&plus;l_3^2&space;\leq(k\cos{\varphi}-l_1\sin{\theta_1})^2&plus;(k\sin{\varphi}-l_1\cos{\theta_1})^2\leq&space;(l_2&plus;l_3)^2\\\\&space;\frac{k^2&plus;l_1^2-(l_2&plus;l_3)^2}{2kl_1}&space;\leq{\sin(\theta_1&plus;\varphi)\leq{\frac{k^2&plus;l_1^2-l_2^2-l_3^2}{2kl_1}}}&space;\end{array}" title=" \begin{array}{l} l_2^2+l_3^2 \leq(k\cos{\varphi}-l_1\sin{\theta_1})^2+(k\sin{\varphi}-l_1\cos{\theta_1})^2\leq (l_2+l_3)^2\\\\ \frac{k^2+l_1^2-(l_2+l_3)^2}{2kl_1} \leq{\sin(\theta_1+\varphi)\leq{\frac{k^2+l_1^2-l_2^2-l_3^2}{2kl_1}}} \end{array}" />
-</p>
-<p>
+
 At this point, naturally one will think of using the arcsin to solve the inequality. However, we have to make sure that the left side of the inequality is no smaller than -1, and the right side of the inequality is no larger than 1. Besides, as:
-</p>
+
 <img src="http://latex.codecogs.com/svg.latex?&space;\begin{array}&space;{lcr}&space;\theta_1\in[-90\degree,&space;90\degree]&space;&&space;\varphi\in[0\degree,&space;90\degree]&space;&&space;\theta_1&plus;\varphi\in[-90\degree,&space;180\degree]&space;\end{array}" title=" \begin{array} {lcr} \theta_1\in[-90\degree, 90\degree] & \varphi\in[0\degree, 90\degree] & \theta_1+\varphi\in[-90\degree, 180\degree] \end{array}" />
-<p>
+
 we have to make sure the angles are in the correct intervals.
 
 Let's suppose the above inequality is in the interval [-1, 1]. Then
-<br/>
-<br/>
+
 <img src="http://latex.codecogs.com/svg.latex?&space;\arcsin\left(\frac{k^2&plus;l_1^2-(l_2&plus;l_3)^2}{2kl_1}\right)&space;\leq\theta_1&plus;\varphi&space;\leq\arcsin\left(\frac{k^2&plus;l_1^2-l_2^2-l_3^2}{2kl_1}\right)" title=" \arcsin\left(\frac{k^2+l_1^2-(l_2+l_3)^2}{2kl_1}\right) \leq\theta_1+\varphi \leq\arcsin\left(\frac{k^2+l_1^2-l_2^2-l_3^2}{2kl_1}\right)" />
-</p>
-<p>
+
 Let
-<br/>
-<br/>
+
 <img src="http://latex.codecogs.com/svg.latex?&space;\begin{array}{lr}&space;\delta_1=\arcsin\left(\frac{k^2&plus;l_1^2-(l_2&plus;l_3)^2}{2kl_1}\right)&space;&&space;\delta_2&space;=&space;\arcsin\left(\frac{k^2&plus;l_1^2-l_2^2-l_3^2}{2kl_1}\right)&space;\end{array}" title=" \begin{array}{lr} \delta_1=\arcsin\left(\frac{k^2+l_1^2-(l_2+l_3)^2}{2kl_1}\right) & \delta_2 = \arcsin\left(\frac{k^2+l_1^2-l_2^2-l_3^2}{2kl_1}\right) \end{array}" />
-<br/>
-<br/>
+
 We also need to check whether 180 - &delta;1 and 180 - &delta;2 is also an interval for &theta;1 + &phi;. To make sure that everything is proper, we need to check where 90 + &phi; lies inside the interval. 90 + &phi; is a limit that cannot be exceeded. Nevertheless, using this way we can find the range of &theta;1, and from then on we can easily find other angles.
 </p>
 
@@ -90,7 +85,7 @@ We also need to check whether 180 - &delta;1 and 180 - &delta;2 is also an inter
 
 <img src="demo/angle-solution.svg"/>
 
-<p>From the graph, it is easy to see that</p>
+From the graph, it is easy to see that</p>
 
 <img src="http://latex.codecogs.com/svg.latex?&space;&space;\begin{array}{l}&space;\theta_1&space;=&space;\arcsin{\frac{m}{l_1}}&space;\\&space;\\&space;\theta_2&space;=&space;\frac{\pi}{2}&space;-&space;\theta_1&space;-&space;\alpha&space;-&space;\beta&space;\\&space;\\&space;\theta_3&space;=&space;\pi&space;-&space;B\widehat{C}D&space;\end{array}" title="  \begin{array}{l} \theta_1 = \arcsin{\frac{m}{l_1}} \\ \\ \theta_2 = \frac{\pi}{2} - \theta_1 - \alpha - \beta \\ \\ \theta_3 = \pi - B\widehat{C}D \end{array}" />
 
@@ -115,8 +110,7 @@ Finally, combine all equations and using only known values:
 <img src="http://latex.codecogs.com/svg.latex?&space;&space;\begin{array}{l}&space;\theta_1&space;=&space;\arcsin{\frac{m}{l_1}}\\&space;\theta_2&space;=&space;\frac{\pi}{2}&space;-&space;\arcsin{\frac{m}{l_1}}&space;-&space;\arccos{\left&space;(&space;\frac{l_2^2&space;&plus;&space;(a-m)^2&space;&plus;(b-\sqrt{l_1^2&space;-&space;m^2})^2&space;-&space;l_3^2&space;}{2l_2^2&space;\sqrt{(a-m)^2&space;&plus;&space;(b-\sqrt{l_1^2&space;-&space;m^2})^2}}&space;\right&space;)}&space;-&space;\arctan{\frac{b-\sqrt{l_1^2&space;-&space;m^2}}{a-m}}\\&space;\theta_3&space;=&space;\pi&space;-&space;\arccos{\left&space;(&space;\frac{l_2^2&plus;l_3^2&space;-&space;(a-m)^2-(b-\sqrt{l_1^2&space;-&space;m^2})^2}{2l_2l_3}&space;\right&space;)}&space;\end{array}" title="  \begin{array}{l} \theta_1 = \arcsin{\frac{m}{l_1}}\\ \theta_2 = \frac{\pi}{2} - \arcsin{\frac{m}{l_1}} - \arccos{\left ( \frac{l_2^2 + (a-m)^2 +(b-\sqrt{l_1^2 - m^2})^2 - l_3^2 }{2l_2^2 \sqrt{(a-m)^2 + (b-\sqrt{l_1^2 - m^2})^2}} \right )} - \arctan{\frac{b-\sqrt{l_1^2 - m^2}}{a-m}}\\ \theta_3 = \pi - \arccos{\left ( \frac{l_2^2+l_3^2 - (a-m)^2-(b-\sqrt{l_1^2 - m^2})^2}{2l_2l_3} \right )} \end{array}" />
 
 The spatial coordinate of each joint could be recovered from &phi;, &theta;<sub>1</sub>, &theta;<sub>2</sub> and &theta;<sub>3</sub>:
-<p>
-<img src="http://latex.codecogs.com/svg.latex?&space;&space;\begin{array}&space;{l}&space;\gamma_1&space;=&space;\frac{\pi}{2}&space;-&space;\theta_1&space;\\\\&space;\gamma_2&space;=&space;\frac{\pi}{2}&space;-&space;\theta_1&space;-&space;\theta_2&space;\\\\&space;\gamma_3&space;=&space;\frac{\pi}{2}&space;-&space;\theta_1&space;-&space;\theta_2&space;-&space;\theta_3\\\\\\&space;\end{array}" title="  \begin{array} {l} \gamma_1 = \frac{\pi}{2} - \theta_1 \\\\ \gamma_2 = \frac{\pi}{2} - \theta_1 - \theta_2 \\\\ \gamma_3 = \frac{\pi}{2} - \theta_1 - \theta_2 - \theta_3\\\\\\ \end{array}" />
-</p>
-<img src="http://latex.codecogs.com/svg.latex?&space;&space;\begin{array}{l}&space;A&space;(0,&space;0,&space;0)&space;\\\\&space;B&space;(l_1\cos{\gamma_1}\cos{\varphi},\&space;l_1\cos{\gamma_1}\sin{\varphi},\&space;l_1\sin{\gamma_1})\\\\&space;C&space;(l_2\cos{\gamma_2}\cos{\varphi}&space;&plus;&space;X_B,\&space;l_2\cos{\gamma_2}\sin{\varphi}&space;&plus;&space;Y_B,\&space;l_2\sin{\gamma_2}&space;&plus;&space;Z_B)\\\\&space;D&space;(l_3\cos{\gamma_3}\cos{\varphi}&space;&plus;&space;X_C,\&space;l_3\cos{\gamma_3}\sin{\varphi}&space;&plus;&space;Y_C,\&space;l_3\sin{\gamma_3}&space;&plus;&space;Z_C)&space;\end{array}" title="  \begin{array}{l} A (0, 0, 0) \\\\ B (l_1\cos{\gamma_1}\cos{\varphi},\ l_1\cos{\gamma_1}\sin{\varphi},\ l_1\sin{\gamma_1})\\\\ C (l_2\cos{\gamma_2}\cos{\varphi} + X_B,\ l_2\cos{\gamma_2}\sin{\varphi} + Y_B,\ l_2\sin{\gamma_2} + Z_B)\\\\ D (l_3\cos{\gamma_3}\cos{\varphi} + X_C,\ l_3\cos{\gamma_3}\sin{\varphi} + Y_C,\ l_3\sin{\gamma_3} + Z_C) \end{array}" />
 
+<img src="http://latex.codecogs.com/svg.latex?&space;&space;\begin{array}&space;{l}&space;\gamma_1&space;=&space;\frac{\pi}{2}&space;-&space;\theta_1&space;\\\\&space;\gamma_2&space;=&space;\frac{\pi}{2}&space;-&space;\theta_1&space;-&space;\theta_2&space;\\\\&space;\gamma_3&space;=&space;\frac{\pi}{2}&space;-&space;\theta_1&space;-&space;\theta_2&space;-&space;\theta_3\\\\\\&space;\end{array}" title="  \begin{array} {l} \gamma_1 = \frac{\pi}{2} - \theta_1 \\\\ \gamma_2 = \frac{\pi}{2} - \theta_1 - \theta_2 \\\\ \gamma_3 = \frac{\pi}{2} - \theta_1 - \theta_2 - \theta_3\\\\\\ \end{array}" />
+
+<img src="http://latex.codecogs.com/svg.latex?&space;&space;\begin{array}{l}&space;A&space;(0,&space;0,&space;0)&space;\\\\&space;B&space;(l_1\cos{\gamma_1}\cos{\varphi},\&space;l_1\cos{\gamma_1}\sin{\varphi},\&space;l_1\sin{\gamma_1})\\\\&space;C&space;(l_2\cos{\gamma_2}\cos{\varphi}&space;&plus;&space;X_B,\&space;l_2\cos{\gamma_2}\sin{\varphi}&space;&plus;&space;Y_B,\&space;l_2\sin{\gamma_2}&space;&plus;&space;Z_B)\\\\&space;D&space;(l_3\cos{\gamma_3}\cos{\varphi}&space;&plus;&space;X_C,\&space;l_3\cos{\gamma_3}\sin{\varphi}&space;&plus;&space;Y_C,\&space;l_3\sin{\gamma_3}&space;&plus;&space;Z_C)&space;\end{array}" title="  \begin{array}{l} A (0, 0, 0) \\\\ B (l_1\cos{\gamma_1}\cos{\varphi},\ l_1\cos{\gamma_1}\sin{\varphi},\ l_1\sin{\gamma_1})\\\\ C (l_2\cos{\gamma_2}\cos{\varphi} + X_B,\ l_2\cos{\gamma_2}\sin{\varphi} + Y_B,\ l_2\sin{\gamma_2} + Z_B)\\\\ D (l_3\cos{\gamma_3}\cos{\varphi} + X_C,\ l_3\cos{\gamma_3}\sin{\varphi} + Y_C,\ l_3\sin{\gamma_3} + Z_C) \end{array}" />
