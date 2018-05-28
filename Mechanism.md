@@ -42,7 +42,7 @@ Similarly,
 
 <img src="http://latex.codecogs.com/svg.latex?&space;\begin{array}{l}&space;m^2&space;-&space;2am&space;&plus;&space;a^2&space;&plus;&space;(l_1^2&space;-&space;m^2)&space;-2b\sqrt{l_1^2-m^2}&space;&plus;&space;b^2&space;<&space;l_2^2&plus;l_3^2&space;&plus;&space;2l_2l_3&space;\\\\&space;-2am&space;&plus;&space;l_1^2&space;&plus;&space;a^2&space;&plus;&space;b^2&space;-&space;l_2^2&space;-&space;l_3^2&space;-&space;2l_2l_3<&space;2b\sqrt{l_1^2-m^2}\\\\&space;let\&space;B&space;=&space;a^2&space;&plus;&space;b^2&space;&plus;&space;l_1^2&space;-&space;l_2^2&space;-&space;l_3^2&space;-&space;2l_2l_3&space;\\\\&space;B&space;-&space;2am&space;<&space;2b\sqrt{l_1^2&space;-&space;m^2}&space;\end{array}" title=" \begin{array}{l} m^2 - 2am + a^2 + (l_1^2 - m^2) -2b\sqrt{l_1^2-m^2} + b^2 < l_2^2+l_3^2 + 2l_2l_3 \\\\ -2am + l_1^2 + a^2 + b^2 - l_2^2 - l_3^2 - 2l_2l_3< 2b\sqrt{l_1^2-m^2}\\\\ let\ B = a^2 + b^2 + l_1^2 - l_2^2 - l_3^2 - 2l_2l_3 \\\\ B - 2am < 2b\sqrt{l_1^2 - m^2} \end{array}" />
 
-If B-2am > 0, we could have
+If B-2am > 0, we will have
 
 <img src="http://latex.codecogs.com/svg.latex?&space;\begin{array}{l}&space;B^2&space;-&space;4Bam&space;&plus;&space;4a^2m^2&space;<&space;4b^2(l_1^2-m^2)\\\\&space;4(a^2&plus;b^2)m^2&space;-&space;4Bam&space;-&space;4b^2l_1^2&space;&plus;&space;B^2&space;<&space;0\\\\&space;m&space;=&space;\frac{4Ba\pm&space;\sqrt{16B^2a^2&space;-&space;16(a^2&plus;b^2)(B^2-&space;4b^2l_1^2)}}{2*4(a^2&plus;b^2)}&space;=&space;\frac{Ba\pm&space;b\sqrt{4l_1^2(a^2&space;&plus;&space;b^2)-B^2}}{2(a^2&plus;b^2)}&space;\end{array}" title=" \begin{array}{l} B^2 - 4Bam + 4a^2m^2 < 4b^2(l_1^2-m^2)\\\\ 4(a^2+b^2)m^2 - 4Bam - 4b^2l_1^2 + B^2 < 0\\\\ m = \frac{4Ba\pm \sqrt{16B^2a^2 - 16(a^2+b^2)(B^2- 4b^2l_1^2)}}{2*4(a^2+b^2)} = \frac{Ba\pm b\sqrt{4l_1^2(a^2 + b^2)-B^2}}{2(a^2+b^2)} \end{array}" />
 
@@ -50,7 +50,7 @@ If B-2am < 0, then this inequality is trivially satisfied. Therefore,
 
 <img src="http://latex.codecogs.com/svg.latex?&space;\begin{array}{l}&space;m_3&space;=&space;\frac{Ba&space;-&space;b\sqrt{4l_1^2(a^2&space;&plus;&space;b^2)-B^2}}{2(a^2&plus;b^2)}\\\\&space;m_4&space;=&space;\frac{Ba&space;&plus;&space;b\sqrt{4l_1^2(a^2&space;&plus;&space;b^2)-B^2}}{2(a^2&plus;b^2)}\\\\&space;m\in[m_3,m_4]\cup[\frac{B}{2a},l_1]\&space;\textup{is&space;the&space;solution&space;set}&space;\end{array}" title=" \begin{array}{l} m_3 = \frac{Ba - b\sqrt{4l_1^2(a^2 + b^2)-B^2}}{2(a^2+b^2)}\\\\ m_4 = \frac{Ba + b\sqrt{4l_1^2(a^2 + b^2)-B^2}}{2(a^2+b^2)}\\\\ m\in[m_3,m_4]\cup[\frac{B}{2a},l_1]\ \textup{is the solution set} \end{array}" />
 
-b = 0 is a special case because the quadratic term m<sup>2</sup> would vanish, giving an linear inequality. Such case is easy to solve. So finally,
+b = 0 is a special case because the quadratic term m<sup>2</sup> would vanish, leaving a linear inequality. Such case is easy to solve. So finally,
 
 <img src="http://latex.codecogs.com/svg.latex?&space;\left\{&space;\begin{array}{ll}&space;m&space;\in&space;\left&space;(&space;([-l_1,&space;m_1]&space;\cup&space;[m_2,&space;l_1])&space;\cap&space;([m_3,&space;m_4]&space;\cup&space;[\frac{B}{2a},&space;l_1])&space;\right&space;)\&space;b&space;\neq&space;0&space;\\\\&space;m&space;\in&space;[\frac{B}{2a},\frac{-A}{2a}]\&space;b=0&space;\end{array}&space;\right." title=" \left\{ \begin{array}{ll} m \in \left ( ([-l_1, m_1] \cup [m_2, l_1]) \cap ([m_3, m_4] \cup [\frac{B}{2a}, l_1]) \right )\ b \neq 0 \\\\ m \in [\frac{B}{2a},\frac{-A}{2a}]\ b=0 \end{array} \right." />
 
