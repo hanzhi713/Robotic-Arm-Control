@@ -160,7 +160,7 @@ class Arm:
 
         # print(u - l1)
 
-        if b > 0:
+        if b != 0:
             first_solutions = set(range(-l1 * Arm.steps, m11)).union(set(range(m12, l1 * Arm.steps)))
             second_solutions = set(range(m21, m22)).union(set(range(u, l1 * Arm.steps)))
             return np.array(list(first_solutions.intersection(second_solutions))) / Arm.steps
@@ -337,7 +337,7 @@ root.title('Robotic Arm Control Simulation')
 
 sx = Scale(root, from_=0, to_=300, orient=HORIZONTAL, length=600, command=lambda t: update(1, t))
 sy = Scale(root, from_=0, to_=300, orient=HORIZONTAL, length=600, command=lambda t: update(2, t))
-sz = Scale(root, from_=0, to_=300, orient=HORIZONTAL, length=600, command=lambda t: update(3, t))
+sz = Scale(root, from_=-20, to_=300, orient=HORIZONTAL, length=600, command=lambda t: update(3, t))
 
 sx.bind('<ButtonRelease-1>', callback)
 sy.bind('<ButtonRelease-1>', callback)
