@@ -4,9 +4,11 @@ It's required that the target spatial point is not too far to reach, namely
 
 <img src="http://latex.codecogs.com/svg.latex?\sqrt{x^2&plus;y^2&plus;z^2}&space;\le&space;l_1&plus;l_2&plus;l_3" title="\sqrt{x^2+y^2+z^2} \le l_1+l_2+l_3" />
 
+This is checked before running the algorithm.
+
 Also, it is assumed that z &ge; 0 as it is not expected that the arm could pick up something below the surface on which it is placed. The assumption z &ge; 0 is required for the analytical solution of inequalities, but as per my testing, deliberately setting z as negative does not lead to failure in the algorithm.
 
-To reach point D(x,y,z) in space, the robotic arm first needs to rotate <img src="http://latex.codecogs.com/svg.latex?\inline&space;&space;\varphi" title=" \varphi" /> degrees so that the linkages of the arm and the target point are coplanar (i.e. they all line on the blue plane). 
+To reach a point D(x,y,z) in space, the robotic arm first needs to rotate <img src="http://latex.codecogs.com/svg.latex?\inline&space;&space;\varphi" title=" \varphi" /> degrees so that the linkages of the arm and the target point are coplanar (i.e. they all line on the blue plane).
 
 <img src="http://latex.codecogs.com/svg.latex?&space;\varphi&space;=&space;\arctan{\frac{y}{x}}" title=" \varphi = \arctan{\frac{y}{x}}" />
 
@@ -38,7 +40,7 @@ This inequality could be solved analytically. Because all terms are positive, we
 
 <img src="http://latex.codecogs.com/svg.latex?&space;\begin{array}{l}&space;l_2^2&plus;l_3^2&space;<&space;m^2&space;-&space;2ma&space;&plus;&space;a^2&space;&plus;&space;(l_1^2&space;-&space;m^2)&space;-2b\sqrt{l_1^2-m^2}&space;&plus;&space;b^2&space;\\\\&space;l_2^2&plus;l_3^2&space;&plus;&space;2ma&space;-&space;l_1^2&space;-&space;a^2&space;-&space;b^2&space;<&space;-2b\sqrt{l_1^2-m^2}&space;\\\\&space;let\&space;A&space;=&space;l_2^2&plus;l_3^2&space;-&space;l_1^2&space;-&space;a^2&space;-&space;b^2&space;\\\\&space;A&space;&plus;&space;2ma&space;<&space;-2b\sqrt{l_1^2&space;-&space;m^2}\end{array}" title=" \begin{array}{l} l_2^2+l_3^2 < m^2 - 2ma + a^2 + (l_1^2 - m^2) -2b\sqrt{l_1^2-m^2} + b^2 \\\\ l_2^2+l_3^2 + 2ma - l_1^2 - a^2 - b^2 < -2b\sqrt{l_1^2-m^2} \\\\ let\ A = l_2^2+l_3^2 - l_1^2 - a^2 - b^2 \\\\ A + 2ma < -2b\sqrt{l_1^2 - m^2}\end{array}" />
 
-We know that both sides are negative, so squaring both sides will flip the inequaliy
+We know that both sides are negative, so squaring both sides will flip the inequality
 
 <img src="http://latex.codecogs.com/svg.latex?&space;\begin{array}{l}A^2&space;&plus;&space;4Aam&space;&plus;&space;4a^2m^2&space;>&space;4b^2(l_1^2-m^2)\\\\&space;4(a^2&plus;b^2)m^2&space;&plus;&space;4Aam&space;-&space;4b^2l_1^2&space;&plus;&space;A^2&space;>&space;0&space;\\\\&space;m&space;=&space;\frac{-4Aa\pm&space;\sqrt{16A^2a^2&space;-&space;16(a^2&plus;b^2)(A^2-&space;4b^2l_1^2)}}{2*4(a^2&plus;b^2)}&space;=&space;\frac{-Aa\pm&space;b\sqrt{4l_1^2(a^2&space;&plus;&space;b^2)-A^2}}{2(a^2&plus;b^2)}&space;\end{array}" title=" \begin{array}{l}A^2 + 4Aam + 4a^2m^2 > 4b^2(l_1^2-m^2)\\\\ 4(a^2+b^2)m^2 + 4Aam - 4b^2l_1^2 + A^2 > 0 \\\\ m = \frac{-4Aa\pm \sqrt{16A^2a^2 - 16(a^2+b^2)(A^2- 4b^2l_1^2)}}{2*4(a^2+b^2)} = \frac{-Aa\pm b\sqrt{4l_1^2(a^2 + b^2)-A^2}}{2(a^2+b^2)} \end{array}" />
 
