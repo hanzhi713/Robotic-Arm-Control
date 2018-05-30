@@ -1,6 +1,12 @@
 # Mechanism
 
-To reach point D in space, the robotic arm first needs to rotate <img src="http://latex.codecogs.com/svg.latex?\inline&space;&space;\varphi" title=" \varphi" /> degrees so that the linkages of the arm and the target point are coplanar (i.e. they all line on the blue plane). 
+It's required that the target spatial point is not too far to reach, namely
+
+<img src="http://latex.codecogs.com/svg.latex?\sqrt{x^2&plus;y^2&plus;z^2}&space;\le&space;l_1&plus;l_2&plus;l_3" title="\sqrt{x^2+y^2+z^2} \le l_1+l_2+l_3" />
+
+Also, it is assumed that z &ge; 0 as it is not expected that the arm could pick up something below the surface on which it is placed. The assumption z &ge; 0 is required for the analytical solution of inequalities, but as per my testing, deliberately setting z as negative does not lead to failure in the algorithm.
+
+To reach point D(x,y,z) in space, the robotic arm first needs to rotate <img src="http://latex.codecogs.com/svg.latex?\inline&space;&space;\varphi" title=" \varphi" /> degrees so that the linkages of the arm and the target point are coplanar (i.e. they all line on the blue plane). 
 
 <img src="http://latex.codecogs.com/svg.latex?&space;\varphi&space;=&space;\arctan{\frac{y}{x}}" title=" \varphi = \arctan{\frac{y}{x}}" />
 
@@ -78,12 +84,12 @@ Let
 
 <img src="http://latex.codecogs.com/svg.latex?&space;\begin{array}{lr}&space;\delta_1=\arcsin\left(\frac{k^2&plus;l_1^2-(l_2&plus;l_3)^2}{2kl_1}\right)&space;&&space;\delta_2&space;=&space;\arcsin\left(\frac{k^2&plus;l_1^2-l_2^2-l_3^2}{2kl_1}\right)&space;\end{array}" title=" \begin{array}{lr} \delta_1=\arcsin\left(\frac{k^2+l_1^2-(l_2+l_3)^2}{2kl_1}\right) & \delta_2 = \arcsin\left(\frac{k^2+l_1^2-l_2^2-l_3^2}{2kl_1}\right) \end{array}" />
 
-We also need to check whether 180 - &delta;1 and 180 - &delta;2 is also an interval for &theta;1 + &phi;. To make sure that everything is proper, we need to check where 90 + &phi; lies inside the interval. 90 + &phi; is a limit that cannot be exceeded. Nevertheless, using this way we can find the range of &theta;1, and from then on we can easily find other angles.
+We also need to check whether 180 - &delta;<sub>1</sub> and 180 - &delta;<sub>2</sub> is also an interval for &theta;<sub>1</sub> + &phi;. To make sure that everything is proper, we need to check where 90 + &phi; lies inside the interval. 90 + &phi; is a limit that cannot be exceeded. Nevertheless, using this way we can find the range of &theta;<sub>1</sub>, and from then on we can easily find other angles.
 </p>
 
 ## From coordinates to angles: A geometric derivation
 
-<img src="demo/angle-solution.svg"/>
+<img src="demo/angle-solution.svg" width="700px"/>
 
 From the graph, it is easy to see that</p>
 
