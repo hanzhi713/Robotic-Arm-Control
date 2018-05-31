@@ -15,7 +15,7 @@ implementation = input("Enter tt, ax or t: \n")
 class Arm:
     steps = 10
     step_length = 1 / steps
-    default_position = np.array([90, 90, 90, 90, 90, 45], np.float64)
+    default_position = np.array([90, 90, 90, 90, 90, 45], np.int32)
 
     @staticmethod
     def default_optimization(d1, d2, d3, p):
@@ -85,7 +85,8 @@ class Arm:
 
     @staticmethod
     def rads_to_degs(rads):
-        return np.round(np.rad2deg(rads))
+        return np.round(np.rad2deg(rads), 0)
+
 
     def t_solve_angle(self, a, b):
         """
@@ -265,7 +266,8 @@ class Arm:
     # Update the joint angles so that the arm can reach (x, y, z)
     def goto(self, x, y, z):
         self.rad_pos = self.get_radians(x, y, z)
-        self.position = np.concatenate((self.cov_degs(self.rads_to_degs(self.rad_pos)), self.position[4:]), axis=0)
+        self.position = np.concatenate((self.cov_degs(self.rads_to_degs(self.rad_pos)), self.position[4:]), axis=0).astype(np.int32)
+
 
     # get coordinates of each joint in three dimensional space
     def get_coordinates(self):
@@ -286,12 +288,11 @@ class Arm:
         sr.write(self.position)
 
 
-write_serial = False
+write_serial = True
 if write_serial:
     from Protocol import ServoProtocol
 
     sr = ServoProtocol('COM3')
-
 
 def callback(e):
     global arm, x, y, z, sr, write_serial
