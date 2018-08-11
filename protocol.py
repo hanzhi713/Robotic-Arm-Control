@@ -4,6 +4,7 @@ import time
 # ServoProtocol implementation
 __author__ = 'Hanzhi Zhou'
 
+
 class ServoProtocol:
     cmd_header = [0xcf, 0xfc]
 

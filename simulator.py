@@ -1,5 +1,5 @@
 from math import *
-import matplotlib
+import matplotlib.axes
 
 matplotlib.use("TkAgg")  # 可能Mac特有的要求，必须要很明显地说matplotlib用tkinter
 import matplotlib.pyplot as plt
@@ -7,9 +7,10 @@ from mpl_toolkits.mplot3d import Axes3D
 from tkinter import *
 import numpy as np
 from numpy.linalg import norm
+import time
 
 half_pi = pi / 2
-implementation = input("Enter tt, ax or t: \n")
+impl = "ax"  # input("Enter tt, ax or t: \n")
 
 
 class Arm:
@@ -25,7 +26,7 @@ class Arm:
     def minimum_change(d1, d2, d3, p):
         return norm(90 - (np.rad2deg(np.array([d1, d2, d3])) - p[:3]), ord=2)
 
-    def __init__(self, r1, r2, r3, opt=default_optimization, implementation="ax"):
+    def __init__(self, r1, r2, r3, x=0, y=150, z=150, opt=default_optimization, implementation="ax"):
         """
           :param r1: Length of the first segment
           :param r2: Length of the second segment
@@ -35,6 +36,7 @@ class Arm:
         self.r1 = r1
         self.r2 = r2
         self.r3 = r3
+        self.x, self.y, self.z = x, y, z
         self.len = r1 + r2 + r3
         self.position = Arm.default_position.copy()
 
@@ -86,7 +88,6 @@ class Arm:
     @staticmethod
     def rads_to_degs(rads):
         return np.round(np.rad2deg(rads), 0)
-
 
     def t_solve_angle(self, a, b):
         """
@@ -147,7 +148,6 @@ class Arm:
         if d1 > 0:
             m11 = int((-A * a - b * sqrt(d1)) / (2 * temp) * Arm.steps)
             m12 = int((-A * a + b * sqrt(d1)) / (2 * temp) * Arm.steps)
-            # print(m11, m12)
 
         B = -A - 2 * l2 * l3
         d2 = 4 * temp * l1 ** 2 - B ** 2
@@ -157,9 +157,6 @@ class Arm:
         if d2 > 0:
             m21 = int((B * a - b * sqrt(d2)) / (2 * temp) * Arm.steps)
             m22 = int((B * a + b * sqrt(d2)) / (2 * temp) * Arm.steps)
-            # print(m21, m22)
-
-        # print(u - l1)
 
         if b != 0:
             first_solutions = set(range(-l1 * Arm.steps, m11)).union(set(range(m12, l1 * Arm.steps)))
@@ -249,7 +246,7 @@ class Arm:
     @staticmethod
     def cov_degs(degs):
         degs = degs.copy()
-        degs[0] += 45
+        # degs[0] += 45
         degs[1] = 90 - degs[1]
         degs[2] = 90 - degs[2]
         degs[3] = 90 - degs[3]
@@ -258,16 +255,21 @@ class Arm:
     @staticmethod
     def cov_rads(rads):
         rads = rads.copy()
-        rads[0] += pi / 4
+        # rads[0] += pi / 4
         rads[1] = half_pi - rads[1]
         rads[2] = half_pi - rads[2]
         rads[2] = half_pi - rads[3]
 
     # Update the joint angles so that the arm can reach (x, y, z)
-    def goto(self, x, y, z):
-        self.rad_pos = self.get_radians(x, y, z)
-        self.position = np.concatenate((self.cov_degs(self.rads_to_degs(self.rad_pos)), self.position[4:]), axis=0).astype(np.int32)
+    def goto(self, x=None, y=None, z=None):
+        if x is None: x = self.x
+        if y is None: y = self.y
+        if z is None: z = self.z
 
+        self.rad_pos = self.get_radians(x, y, z)
+        self.position = np.concatenate((self.cov_degs(self.rads_to_degs(self.rad_pos)), self.position[4:]),
+                                       axis=0).astype(np.int32)
+        self.x, self.y, self.z = x, y, z
 
     # get coordinates of each joint in three dimensional space
     def get_coordinates(self):
@@ -284,73 +286,118 @@ class Arm:
         z3 = z2 + sin(d3) * r3
         return [0, x1, x2, x3], [0, y1, y2, y3], [0, z1, z2, z3]
 
+    def set_claws_rotation(self, rot):
+        self.position[4] = rot
+
+    def open_claws(self):
+        self.position[5] = 0
+
+    def close_claws(self):
+        self.position[5] = 79
+
     def write(self, sr):
         sr.write(self.position)
 
+    def pickup(self, sr, target_x, target_y, target_z, claw_rot, smooth=True, steps=40, high=80):
+        self.open_claws()
+        self.set_claws_rotation(claw_rot)
+        self.goto_and_write(sr, target_x, target_y, target_z + high, smooth=smooth, steps=steps)
+        self.goto_and_write(sr, target_x, target_y, target_z, smooth=smooth, steps=8)
+        time.sleep(0.75)
+        self.close_claws()
+        self.goto_and_write(sr, target_x, target_y, target_z + high, smooth=smooth, steps=8)
 
-write_serial = True
-if write_serial:
-    from Protocol import ServoProtocol
+    def goto_and_write(self, sr, target_x, target_y, target_z, smooth=True, steps=40):
+        if smooth:
+            x_step, y_step, z_step = (target_x - self.x) / steps, (target_y - self.y) / steps, (
+                    target_z - self.z) / steps
+            for x, y, z in zip(np.arange(self.x, target_x, x_step),
+                               np.arange(self.y, target_y, y_step),
+                               np.arange(self.z, target_z, z_step)):
+                time.sleep(0.05)
+                self.goto(x, y, z)
+                self.write(sr)
+        else:
+            self.goto(target_x, target_y, target_z)
+            self.write(sr)
 
-    sr = ServoProtocol('COM3')
 
-def callback(e):
-    global arm, x, y, z, sr, write_serial
-    arm.goto(x, y, z)
-    xs, ys, zs = arm.get_coordinates()
-    ax.clear()
-    ax.set_xlabel('X / mm')
-    ax.set_xlim(-20, 200)
-    ax.set_ylabel('Y / mm')
-    ax.set_ylim(-20, 200)
-    ax.set_zlabel('Z / mm')
-    ax.set_zlim(0, 200)
-    ax.plot(xs, ys, zs, linewidth=2.5, marker='*', markersize=8, markerfacecolor='y')
-    ax.scatter(x, y, z, c='r', s=100, marker='o')
+class Simulator:
 
+    def __init__(self, arm: Arm, ax: Axes3D):
+        self.arm = arm
+        self.ax = ax
+        self.update()
+
+    def update(self, xmin=-100, xmax=100, ymin=0, ymax=200, zmin=-100, zmax=100):
+        xs, ys, zs = self.arm.get_coordinates()
+        self.ax.clear()
+        self.ax.set_xlabel('X / mm')
+        self.ax.set_xlim(xmin, xmax)
+        self.ax.set_ylabel('Y / mm')
+        self.ax.set_ylim(ymin, ymax)
+        self.ax.set_zlabel('Z / mm')
+        self.ax.set_zlim(zmin, zmax)
+        self.ax.plot(xs, ys, zs, linewidth=2.5, marker='*', markersize=8, markerfacecolor='y')
+        self.ax.scatter(xs[-1], ys[-1], zs[-1], c='r', s=100, marker='o')
+
+
+if __name__ == "__main__":
+    write_serial = True
     if write_serial:
-        arm.write(sr)
+        from protocol import ServoProtocol
+
+        sr = ServoProtocol('COM3')
 
 
-def update(n, t):
-    global x, y, z
-    if n == 1:
-        x = int(t)
-    elif n == 2:
-        y = int(t)
-    else:
-        z = int(t)
-    callback(1)
+    def update(n, t):
+        global claw_status, arm, simulator
+        if n == 1:
+            arm.goto(x=int(t))
+        elif n == 2:
+            arm.goto(y=int(t))
+        elif n == 3:
+            arm.goto(z=int(t))
+        elif n == 4:
+            arm.set_claws_rotation(int(t))
+        elif n == 5:
+            claw_status = not claw_status
+            if claw_status:
+                arm.open_claws()
+            else:
+                arm.close_claws()
+        simulator.update()
+
+        if write_serial:
+            arm.write(sr)
 
 
-arm = Arm(93, 87, 139, Arm.minimum_change, implementation)
+    fig = plt.figure()
+    ax = Axes3D(fig)
+    arm = Arm(93, 87, 110, opt=Arm.minimum_change, implementation=impl)
+    simulator = Simulator(arm, ax)
 
-fig = plt.figure()
-ax = Axes3D(fig)
+    plt.ion()
+    claw_status = False
 
-plt.ion()
-x = 150
-y = 150
-z = 150
+    root = Tk()
+    root.title('Robotic Arm Control Simulation')
 
-root = Tk()
-root.title('Robotic Arm Control Simulation')
+    sx = Scale(root, from_=-200, to_=200, orient=HORIZONTAL, length=600, command=lambda t: update(1, t))
+    sy = Scale(root, from_=0, to_=300, orient=HORIZONTAL, length=600, command=lambda t: update(2, t))
+    sz = Scale(root, from_=-75, to_=200, orient=HORIZONTAL, length=600, command=lambda t: update(3, t))
+    claw_s = Scale(root, from_=0, to_=180, orient=HORIZONTAL, length=600, command=lambda t: update(4, t))
+    Button(root, text="Change Claw Status", command=lambda: update(5, None)).pack()
 
-sx = Scale(root, from_=0, to_=300, orient=HORIZONTAL, length=600, command=lambda t: update(1, t))
-sy = Scale(root, from_=0, to_=300, orient=HORIZONTAL, length=600, command=lambda t: update(2, t))
-sz = Scale(root, from_=-20, to_=300, orient=HORIZONTAL, length=600, command=lambda t: update(3, t))
+    sx.set(0)
+    sy.set(150)
+    sz.set(100)
+    claw_s.set(90)
 
-sx.bind('<ButtonRelease-1>', callback)
-sy.bind('<ButtonRelease-1>', callback)
-sz.bind('<ButtonRelease-1>', callback)
+    sx.pack()
+    sy.pack()
+    sz.pack()
+    claw_s.pack()
 
-sx.set(150)
-sy.set(150)
-sz.set(150)
-
-sx.pack()
-sy.pack()
-sz.pack()
-
-plt.show()
-root.mainloop()
+    plt.show()
+    root.mainloop()
