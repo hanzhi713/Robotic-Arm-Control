@@ -16,7 +16,7 @@ impl = "ax"  # input("Enter tt, ax or t: \n")
 class Arm:
     steps = 10
     step_length = 1 / steps
-    default_position = np.array([90, 90, 90, 90, 90, 45], np.int32)
+    default_position = np.array([90, 90, 90, 90, 90, 79], np.int32)
 
     @staticmethod
     def default_optimization(d1, d2, d3, p):
@@ -325,6 +325,9 @@ class Arm:
             self.goto(target_x, target_y, target_z)
             self.write(sr)
 
+def vec_rot(vec, axis, theta):
+    return vec * cos(theta) + np.cross(axis, vec) * sin(theta) + axis * np.dot(axis, vec) * (1 - cos(theta))
+
 
 class Simulator:
 
@@ -335,6 +338,28 @@ class Simulator:
 
     def update(self, xmin=-100, xmax=100, ymin=0, ymax=200, zmin=-100, zmax=100):
         xs, ys, zs = self.arm.get_coordinates()
+        points = np.array(list(zip(xs, ys, zs))[1:])
+
+        last_line = points[2] - points[1]
+        last_line /= np.linalg.norm(last_line) # unit vector
+        normal = np.cross(points[0] - points[1], points[0] - points[2])
+
+        rot_axis = np.cross(normal, last_line)
+        rot_axis /= np.linalg.norm(rot_axis)        
+        
+        # open and close rotation
+        _rot1 = np.deg2rad(self.arm.position[5]) / 2
+        temp1 = vec_rot(last_line * 20, rot_axis, _rot1)
+        temp2 = vec_rot(last_line * 20, rot_axis, - _rot1)
+
+        # fifth servo rotation
+        rot = np.deg2rad(self.arm.position[4])
+        claw_vec_rot1 = vec_rot(temp1, last_line, rot)
+        claw_vec_rot2 = vec_rot(temp2, last_line, rot)
+
+        claw_point1 = points[2] + claw_vec_rot1
+        claw_point2 = points[2] + claw_vec_rot2
+
         self.ax.clear()
         self.ax.set_xlabel('X / mm')
         self.ax.set_xlim(xmin, xmax)
@@ -344,6 +369,11 @@ class Simulator:
         self.ax.set_zlim(zmin, zmax)
         self.ax.plot(xs, ys, zs, linewidth=2.5, marker='*', markersize=8, markerfacecolor='y')
         self.ax.scatter(xs[-1], ys[-1], zs[-1], c='r', s=100, marker='o')
+
+        claw_points = np.array([points[2], claw_point1]).transpose()
+        self.ax.plot(claw_points[0], claw_points[1], claw_points[2], linewidth=2.5, marker='*', markersize=8, markerfacecolor='y')
+        claw_points = np.array([points[2], claw_point2]).transpose()
+        self.ax.plot(claw_points[0], claw_points[1], claw_points[2], linewidth=2.5, marker='*', markersize=8, markerfacecolor='y')
 
 
 if __name__ == "__main__":
