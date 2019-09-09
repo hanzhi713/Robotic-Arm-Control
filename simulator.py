@@ -1,7 +1,7 @@
 from math import *
 import matplotlib.axes
 
-matplotlib.use("TkAgg")  # 可能Mac特有的要求，必须要很明显地说matplotlib用tkinter
+matplotlib.use("TkAgg")  # Mac requires matplotlib to explicitly use tkinter
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 from tkinter import *
@@ -56,6 +56,9 @@ class Arm:
         elif implementation == "tt":
             self.solve_three = self.t_solve_angle
             self.get_m_range = self.get_m_range_traverse
+        
+        else:
+            raise ValueError('implementation must be one of "t", "ax" and "tt"')
 
     def get_radians(self, x, y, z):
         """
@@ -284,6 +287,7 @@ class Arm:
         d3 = d2 - self.rad_pos[3]
         x3, y3 = cos(d3) * r3 * cos(d0) + x2, cos(d3) * r3 * sin(d0) + y2
         z3 = z2 + sin(d3) * r3
+        
         return [0, x1, x2, x3], [0, y1, y2, y3], [0, z1, z2, z3]
 
     def set_claws_rotation(self, rot):
@@ -343,7 +347,7 @@ class Simulator:
 
 
 if __name__ == "__main__":
-    write_serial = True
+    write_serial = False
     if write_serial:
         from protocol import ServoProtocol
 

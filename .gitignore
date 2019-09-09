@@ -5,3 +5,4 @@
 .idea/vcs.xml
 .idea/Robotic-Arm-Control.iml
 __pycache__
+.DS_Store
