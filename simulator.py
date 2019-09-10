@@ -1,15 +1,15 @@
 import time
 from numpy.linalg import norm
 import numpy as np
-from tkinter import *
+from tkinter import Tk, HORIZONTAL, Scale, Label, IntVar
 from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.pyplot as plt
-from math import *
-import matplotlib.axes
-
+from math import pi, cos, sin, asin, acos, atan2, inf, sqrt, ceil, floor
+import matplotlib
 matplotlib.use("TkAgg")  # Mac requires matplotlib to explicitly use tkinter
 
 half_pi = pi / 2
+
 
 class Arm:
     steps = 10
@@ -84,8 +84,8 @@ class Arm:
         calculate d2 and d3
         """
         temp = (a - m) ** 2 + (b - n) ** 2
-        d2 = half_pi - d1 - acos((self.r2 ** 2 + temp - self.r3 ** 2) 
-        / (2 * self.r2 * sqrt(temp))) - atan2((b - n) , (a - m))
+        d2 = half_pi - d1 - acos((self.r2 ** 2 + temp - self.r3 ** 2)
+                                 / (2 * self.r2 * sqrt(temp))) - atan2((b - n), (a - m))
         if not -half_pi <= d2 <= half_pi:
             return
         d3 = pi - acos((self.r2 ** 2 + self.r3 ** 2 - temp) / (2 * self.r2 * self.r3))
@@ -158,8 +158,9 @@ class Arm:
         if b != 0:
             return np.intersect1d(
                 np.union1d(
-                    np.arange(-l1 * Arm.steps, m1, dtype=np.int32), np.arange(m2, l1 * Arm.steps, dtype=np.int32)
-                ), 
+                    np.arange(-l1 * Arm.steps, m1, dtype=np.int32), np.arange(m2,
+                                                                              l1 * Arm.steps, dtype=np.int32)
+                ),
                 np.union1d(
                     np.arange(m3, m4, dtype=np.int32), np.arange(u, l1 * Arm.steps, dtype=np.int32)
                 ),
@@ -184,10 +185,10 @@ class Arm:
     # For Alex's implementation
     def _get_angle_range(self, a, b):
         theta_range = []
-        k = norm((a, b), ord=2)  # distance
-        phi = atan(b / a)
+        k = sqrt(a**2 + b**2)  # distance
+        phi = atan2(b, a)
 
-        lim_min = norm((self.r2, self.r3), ord=2) ** 2
+        lim_min = self.r2 ** 2 + self.r3 ** 2
         lim_max = (self.r2 + self.r3) ** 2
         m_min = (k ** 2 + self.r1 ** 2 - lim_max) / (2 * k * self.r1)
         m_max = (k ** 2 + self.r1 ** 2 - lim_min) / (2 * k * self.r1)
@@ -295,7 +296,7 @@ class Arm:
         self.position[5] = 79
 
     def write(self, sr):
-        sr.write(self.position.astype("int32")) # my servos require int degrees
+        sr.write(self.position.astype("int32"))  # my servos require int degrees
 
     def pickup(self, sr, target_x, target_y, target_z, claw_rot, smooth=True, steps=40, high=80):
         self.open_claws()
@@ -321,8 +322,11 @@ class Arm:
             self.write(sr)
 
 # from https://en.wikipedia.org/wiki/Rodrigues%27_rotation_formula
+
+
 def vec_rot(vec, axis, theta):
     return vec * cos(theta) + np.cross(axis, vec) * sin(theta) + axis * np.dot(axis, vec) * (1 - cos(theta))
+
 
 class Simulator:
 
@@ -358,7 +362,8 @@ class Simulator:
         self.ax.set_ylim(ymin, ymax)
         self.ax.set_zlabel('Z / mm')
         self.ax.set_zlim(zmin, zmax)
-        self.ax.plot(_points[0], _points[1], _points[2], linewidth=2.5, marker='*', markersize=8, markerfacecolor='y')
+        self.ax.plot(_points[0], _points[1], _points[2], linewidth=2.5,
+                     marker='*', markersize=8, markerfacecolor='y')
         self.ax.scatter(_points[0, -1], _points[1, -1], _points[2, -1], c='r', s=80, marker='o')
 
         claw_points = np.array([points[2], points[2] + claw_vec_rot1]).transpose()
@@ -395,14 +400,14 @@ if __name__ == "__main__":
             update_servo_scale()
         elif 3 <= n < 9:
             arm.set_position(n - 3, int_vars[n].get())
-            if n < 7: # 7 and 8 are the claws, no need to update
+            if n < 7:  # 7 and 8 are the claws, no need to update
                 update_xyz_scale()
-    
+
         simulator.update(xmin, xmax, ymin, ymax, zmin, zmax)
 
         if write_serial:
             arm.write(sr)
-    
+
     def update_servo_scale():
         for i, servo in enumerate(servos):
             int_vars[3 + i].set(arm.position[i])
@@ -421,18 +426,15 @@ if __name__ == "__main__":
 
     root = Tk()
     root.title('Robotic Arm Control Simulation')
-    
-    int_vars = [IntVar(root) for i in range(9)]
+    root.configure(background='white')
 
-    Label(root, text="x (mm): ").grid(row=0)
-    Label(root, text="y (mm): ").grid(row=1)
-    Label(root, text="z (mm): ").grid(row=2)
-    Label(root, text="0 (deg): ").grid(row=3)
-    Label(root, text="1 (deg): ").grid(row=4)
-    Label(root, text="2 (deg): ").grid(row=5)
-    Label(root, text="3 (deg): ").grid(row=6)
-    Label(root, text="claw (deg): ").grid(row=7)
-    Label(root, text="open (deg): ").grid(row=8)
+    int_vars = [IntVar(root) for i in range(9)]
+    texts = ["x (mm): ", "y (mm): ", "z (mm): ", "0 (deg): ", "1 (deg): ",
+             "2 (deg): ", "3 (deg): ", "claw (deg): ", "open (deg): "]
+    for i, txt in enumerate(texts):
+        label = Label(root, text=txt, font=("Courier", 14))
+        label.configure(background="white")
+        label.grid(row=i)
 
     # scale for the x, y and z
     sx = Scale(root, from_=xmin, to_=xmax, orient=HORIZONTAL,
@@ -446,10 +448,11 @@ if __name__ == "__main__":
     servos = []
     for i in range(6):
         servo = (
-                lambda i: 
-                Scale(root, from_=0, to_=180, orient=HORIZONTAL, length=600, 
-                    command=lambda t: update(3 + i, t),    variable=int_vars[3 + i])
-            )(i) # closure
+            lambda i:
+            Scale(root, from_=0, to_=180, orient=HORIZONTAL, length=600,
+                  command=lambda t: update(3 + i, t),    variable=int_vars[3 + i])
+        )(i)  # closure
+        servo.configure(background="white")
         servos.append(servo)
         servo.set(arm.position[i])
         servo.grid(row=3 + i, column=1)
@@ -457,6 +460,9 @@ if __name__ == "__main__":
     sx.set(100)
     sy.set(100)
     sz.set(100)
+    sx.configure(background="white")
+    sy.configure(background="white")
+    sz.configure(background="white")
     sx.grid(row=0, column=1)
     sy.grid(row=1, column=1)
     sz.grid(row=2, column=1)
