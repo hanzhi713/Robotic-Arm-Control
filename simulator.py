@@ -131,36 +131,42 @@ class Arm:
 
         A = l2 ** 2 + l3 ** 2 - l1 ** 2 - a ** 2 - b ** 2
 
-        temp = a ** 2 + b ** 2
-        d1 = 4 * temp * l1 ** 2 - A ** 2
-
-        m11 = 0
-        m12 = 0
-        m21 = 0
-        m22 = 0
+        temp = (a ** 2 + b ** 2) * 2
+        d1 = 2 * temp * l1 ** 2 - A ** 2
 
         if d1 > 0:
-            m11 = int((-A * a - b * sqrt(d1)) / (2 * temp) * Arm.steps)
-            m12 = int((-A * a + b * sqrt(d1)) / (2 * temp) * Arm.steps)
+            _sq_d1 = sqrt(d1)
+            m1 = int((-A * a - b * _sq_d1) / temp * Arm.steps)
+            m2 = int((-A * a + b * _sq_d1) / temp * Arm.steps)
+        else:
+            m1 = 0
+            m2 = 0
 
         B = -A - 2 * l2 * l3
-        d2 = 4 * temp * l1 ** 2 - B ** 2
+        d2 = 2 * temp * l1 ** 2 - B ** 2
 
         u = int(B / (2 * a) * Arm.steps)
 
         if d2 > 0:
-            m21 = int((B * a - b * sqrt(d2)) / (2 * temp) * Arm.steps)
-            m22 = int((B * a + b * sqrt(d2)) / (2 * temp) * Arm.steps)
+            _sq_d2 = sqrt(d2)
+            m3 = int((B * a - b * _sq_d2) / temp * Arm.steps)
+            m4 = int((B * a + b * _sq_d2) / temp * Arm.steps)
+        else:
+            m3 = 0
+            m4 = 0
 
         if b != 0:
-            first_solutions = set(range(-l1 * Arm.steps, m11)
-                                  ).union(set(range(m12, l1 * Arm.steps)))
-            second_solutions = set(range(m21, m22)).union(set(range(u, l1 * Arm.steps)))
-            return np.array(list(first_solutions.intersection(second_solutions))) / Arm.steps
+            return np.intersect1d(
+                np.union1d(
+                    np.arange(-l1 * Arm.steps, m1, dtype=np.int32), np.arange(m2, l1 * Arm.steps, dtype=np.int32)
+                ), 
+                np.union1d(
+                    np.arange(m3, m4, dtype=np.int32), np.arange(u, l1 * Arm.steps, dtype=np.int32)
+                ),
+                assume_unique=True
+            ) / Arm.steps
         else:
-            m1 = u
-            m2 = -A / (2 * a)
-            return np.arange(m1 + Arm.step_length, m2, Arm.step_length)
+            return np.arange(u + Arm.step_length, -A / (2 * a), Arm.step_length)
 
     # For Alex's implementation
     def _ax_solve_angle(self, a, b, arr):
@@ -315,11 +321,8 @@ class Arm:
             self.write(sr)
 
 # from https://en.wikipedia.org/wiki/Rodrigues%27_rotation_formula
-
-
 def vec_rot(vec, axis, theta):
     return vec * cos(theta) + np.cross(axis, vec) * sin(theta) + axis * np.dot(axis, vec) * (1 - cos(theta))
-
 
 class Simulator:
 
