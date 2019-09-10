@@ -70,14 +70,32 @@ class Arm:
         if distance > self.len:
             raise Exception("Too far to reach!")
 
-        d0 = atan2(y, x)
+        ds = np.zeros(4, dtype=np.float64)
+        ds[0] = atan2(y, x)
         # if not pi * 0.75 < d0 < -pi * 0.25:
         #     raise Exception("Out of range!")
 
-        d1, d2, d3 = self.solve_three(norm((x, y), ord=2), z)
-        return np.array((d0, d1, d2, d3), dtype=np.float64)
+        if not self.solve_three(norm((x, y), ord=2), z, ds):
+            raise Exception("!!")
+        return ds
 
-    def _t_solve_angle(self, a, b):
+    def calc_ds(self, a, m, b, n, d1, arr):
+        """
+        calculate d2 and d3
+        """
+        temp = (a - m) ** 2 + (b - n) ** 2
+        d2 = half_pi - d1 - acos((self.r2 ** 2 + temp - self.r3 ** 2) 
+        / (2 * self.r2 * sqrt(temp))) - atan2((b - n) , (a - m))
+        if not -half_pi <= d2 <= half_pi:
+            return
+        d3 = pi - acos((self.r2 ** 2 + self.r3 ** 2 - temp) / (2 * self.r2 * self.r3))
+        if not -half_pi <= d3 <= half_pi:
+            return
+        arr[1] = d2
+        arr[2] = d3
+        return self.opt(d1, d2, d3, self.position)
+
+    def _t_solve_angle(self, a, b, arr):
         """
         :param a: x coordinate in the plane
         :param b: y coordinate in the plane
@@ -85,31 +103,19 @@ class Arm:
         """
 
         s = inf
-        rs = None
-        rg = self._get_m_range(a, b)
-        for m in rg:
-            try:
-                d1 = asin(m / self.r1)
-                n = sqrt(self.r1 ** 2 - m ** 2)
-                temp = (a - m) ** 2 + (b - n) ** 2
-                d2 = half_pi - d1 - acos((self.r2 ** 2 + temp - self.r3 ** 2) / (2 * self.r2 * sqrt(temp))) - atan(
-                    (b - n) / (a - m))
-                if not -half_pi < d2 < half_pi:
-                    continue
-                d3 = pi - acos((self.r2 ** 2 + self.r3 ** 2 - temp) / (2 * self.r2 * self.r3))
-                if not -half_pi < d3 < half_pi:
-                    continue
-                opt_val = self.opt(d1, d2, d3, self.position)
-                if opt_val < s:
-                    s = opt_val
-                    rs = d1, d2, d3
-            except:
-                continue
-        return rs
+        temp_arr = np.zeros(3, dtype=np.float64)
+        for m in self._get_m_range(a, b):
+            d1 = asin(m / self.r1)
+            temp_arr[0] = d1
+            opt_val = self.calc_ds(a, m, b, sqrt(self.r1 ** 2 - m ** 2), d1, temp_arr)
+            if opt_val is not None and opt_val < s:
+                s = opt_val
+                arr[1:] = temp_arr
+        return s != inf
 
     def _get_m_range_traverse(self, a, b):
         rg = []
-        c1 = norm((self.r2, self.r3), ord=2)
+        c1 = sqrt(self.r2 ** 2 + self.r3 ** 2)
         c2 = (self.r2 + self.r3) ** 2
         for i in range(-self.r1 * Arm.steps, self.r1 * Arm.steps):
             m = i / Arm.steps
@@ -157,29 +163,17 @@ class Arm:
             return np.arange(m1 + Arm.step_length, m2, Arm.step_length)
 
     # For Alex's implementation
-    def _ax_solve_angle(self, a, b):
-        theta_range = self._get_angle_range(a, b)
+    def _ax_solve_angle(self, a, b, arr):
         s = inf
-        rs = None
-        for k in theta_range:
-            try:
-                d1 = np.deg2rad(k)
-                m, n = self.r1 * sin(d1), self.r1 * cos(d1)
-                temp = (norm(((a - m), (b - n)), ord=2)) ** 2
-                d2 = half_pi - d1 - acos((self.r2 ** 2 + temp - self.r3 ** 2) / (2 * self.r2 * sqrt(temp))) - atan(
-                    (b - n) / (a - m))
-                if not -half_pi < d2 < half_pi:
-                    continue
-                d3 = pi - acos((self.r2 ** 2 + self.r3 ** 2 - temp) / (2 * self.r2 * self.r3))
-                if not -half_pi < d3 < half_pi:
-                    continue
-                opt_val = self.opt(d1, d2, d3, self.position)
-                if opt_val < s:
-                    s = opt_val
-                    rs = d1, d2, d3
-            except:
-                continue
-        return rs
+        temp_arr = np.zeros(3, dtype=np.float64)
+        for k in self._get_angle_range(a, b):
+            d1 = np.deg2rad(k)
+            temp_arr[0] = d1
+            opt_val = self.calc_ds(a, self.r1 * sin(d1), b, self.r1 * cos(d1), d1, temp_arr)
+            if opt_val is not None and opt_val < s:
+                s = opt_val
+                arr[1:] = temp_arr
+        return s != inf
 
     # For Alex's implementation
     def _get_angle_range(self, a, b):
