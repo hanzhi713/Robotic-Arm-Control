@@ -298,6 +298,9 @@ class Arm:
     def set_claws_rotation(self, rot):
         self.position[4] = rot
 
+    def set_claws_open(self, rot):
+        self.position[5] = rot
+
     def open_claws(self):
         self.position[5] = 0
 
@@ -391,7 +394,6 @@ if __name__ == "__main__":
         sr = ServoProtocol('COM3')
 
     def update(n, t):
-        global claw_status, arm, simulator
         if n == 1:
             arm.goto(x=int(t))
         elif n == 2:
@@ -401,11 +403,7 @@ if __name__ == "__main__":
         elif n == 4:
             arm.set_claws_rotation(int(t))
         elif n == 5:
-            claw_status = not claw_status
-            if claw_status:
-                arm.open_claws()
-            else:
-                arm.close_claws()
+            arm.set_claws_open(int(t))
         simulator.update()
 
         if write_serial:
@@ -417,10 +415,14 @@ if __name__ == "__main__":
     simulator = Simulator(arm, ax)
 
     plt.ion()
-    claw_status = False
-
     root = Tk()
     root.title('Robotic Arm Control Simulation')
+
+    Label(root, text="x (mm): ").grid(row=0)
+    Label(root, text="y (mm): ").grid(row=1)
+    Label(root, text="z (mm): ").grid(row=2)
+    Label(root, text="claw (deg): ").grid(row=3)
+    Label(root, text="open (deg): ").grid(row=4)
 
     sx = Scale(root, from_=-200, to_=200, orient=HORIZONTAL,
                length=600, command=lambda t: update(1, t))
@@ -430,17 +432,21 @@ if __name__ == "__main__":
                length=600, command=lambda t: update(3, t))
     claw_s = Scale(root, from_=0, to_=180, orient=HORIZONTAL,
                    length=600, command=lambda t: update(4, t))
-    Button(root, text="Change Claw Status", command=lambda: update(5, None)).pack()
+    claw_open = Scale(root, from_=0, to_=180, orient=HORIZONTAL,
+                   length=600, command=lambda t: update(5, t))
+    # Button(root, text="Change Claw Status", command=lambda: update(5, None)).pack()
 
     sx.set(0)
     sy.set(150)
     sz.set(100)
     claw_s.set(90)
+    claw_open.set(79)
 
-    sx.pack()
-    sy.pack()
-    sz.pack()
-    claw_s.pack()
+    sx.grid(row=0, column=1)
+    sy.grid(row=1, column=1)
+    sz.grid(row=2, column=1)
+    claw_s.grid(row=3, column=1)
+    claw_open.grid(row=4, column=1)
 
     plt.show()
     root.mainloop()
