@@ -1,13 +1,13 @@
+import time
+from numpy.linalg import norm
+import numpy as np
+from tkinter import *
+from mpl_toolkits.mplot3d import Axes3D
+import matplotlib.pyplot as plt
 from math import *
 import matplotlib.axes
 
 matplotlib.use("TkAgg")  # Mac requires matplotlib to explicitly use tkinter
-import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D
-from tkinter import *
-import numpy as np
-from numpy.linalg import norm
-import time
 
 half_pi = pi / 2
 impl = "ax"  # input("Enter tt, ax or t: \n")
@@ -41,7 +41,8 @@ class Arm:
         self.position = Arm.default_position.copy()
 
         # servo degree in radians
-        self.rad_pos = np.array([half_pi, half_pi, half_pi, half_pi, half_pi, pi / 4], dtype=np.float64)
+        self.rad_pos = np.array(
+            [half_pi, half_pi, half_pi, half_pi, half_pi, pi / 4], dtype=np.float64)
         self.opt = opt
 
         # Stands for Tom: Hanzhi Zhou's implementation by analytically solve the inequality using algebraic method
@@ -56,9 +57,10 @@ class Arm:
         elif implementation == "tt":
             self.solve_three = self.t_solve_angle
             self.get_m_range = self.get_m_range_traverse
-        
+
         else:
-            raise ValueError('implementation must be one of "t", "ax" and "tt"')
+            raise ValueError(
+                'implementation must be one of "t", "ax" and "tt"')
 
     def get_radians(self, x, y, z):
         """
@@ -111,7 +113,8 @@ class Arm:
                     (b - n) / (a - m))
                 if not -half_pi < d2 < half_pi:
                     continue
-                d3 = pi - acos((self.r2 ** 2 + self.r3 ** 2 - temp) / (2 * self.r2 * self.r3))
+                d3 = pi - acos((self.r2 ** 2 + self.r3 ** 2 -
+                                temp) / (2 * self.r2 * self.r3))
                 if not -half_pi < d3 < half_pi:
                     continue
                 opt_val = self.opt(d1, d2, d3, self.position)
@@ -162,8 +165,10 @@ class Arm:
             m22 = int((B * a + b * sqrt(d2)) / (2 * temp) * Arm.steps)
 
         if b != 0:
-            first_solutions = set(range(-l1 * Arm.steps, m11)).union(set(range(m12, l1 * Arm.steps)))
-            second_solutions = set(range(m21, m22)).union(set(range(u, l1 * Arm.steps)))
+            first_solutions = set(
+                range(-l1 * Arm.steps, m11)).union(set(range(m12, l1 * Arm.steps)))
+            second_solutions = set(range(m21, m22)).union(
+                set(range(u, l1 * Arm.steps)))
             return np.array(list(first_solutions.intersection(second_solutions))) / Arm.steps
         else:
             print(0)
@@ -185,7 +190,8 @@ class Arm:
                     (b - n) / (a - m))
                 if not -half_pi < d2 < half_pi:
                     continue
-                d3 = pi - acos((self.r2 ** 2 + self.r3 ** 2 - temp) / (2 * self.r2 * self.r3))
+                d3 = pi - acos((self.r2 ** 2 + self.r3 ** 2 -
+                                temp) / (2 * self.r2 * self.r3))
                 if not -half_pi < d3 < half_pi:
                     continue
                 opt_val = self.opt(d1, d2, d3, self.position)
@@ -234,7 +240,8 @@ class Arm:
 
         c = np.rad2deg(np.array([angle_1, angle_2]))
         if angle_3 != 0 and angle_4 != 0:
-            c = np.concatenate((c, np.rad2deg(np.array([angle_3, angle_4]))), axis=0)
+            c = np.concatenate(
+                (c, np.rad2deg(np.array([angle_3, angle_4]))), axis=0)
             for i in range(ceil(Arm.steps * c[0]), floor(Arm.steps * c[1] + 1)):
                 theta_range.append(i / Arm.steps)
             for i in range(ceil(Arm.steps * c[2]), floor(Arm.steps * c[3] + 1)):
@@ -265,9 +272,12 @@ class Arm:
 
     # Update the joint angles so that the arm can reach (x, y, z)
     def goto(self, x=None, y=None, z=None):
-        if x is None: x = self.x
-        if y is None: y = self.y
-        if z is None: z = self.z
+        if x is None:
+            x = self.x
+        if y is None:
+            y = self.y
+        if z is None:
+            z = self.z
 
         self.rad_pos = self.get_radians(x, y, z)
         self.position = np.concatenate((self.cov_degs(self.rads_to_degs(self.rad_pos)), self.position[4:]),
@@ -281,13 +291,14 @@ class Arm:
         x1, y1 = cos(d1) * self.r1 * cos(d0), cos(d1) * self.r1 * sin(d0)
         z1 = sin(d1) * self.r1
         d2 = d1 - self.rad_pos[2]
-        x2, y2 = cos(d2) * self.r2 * cos(d0) + x1, cos(d2) * self.r2 * sin(d0) + y1
+        x2, y2 = cos(d2) * self.r2 * cos(d0) + \
+            x1, cos(d2) * self.r2 * sin(d0) + y1
         z2 = z1 + sin(d2) * self.r2
         r3 = self.r3
         d3 = d2 - self.rad_pos[3]
         x3, y3 = cos(d3) * r3 * cos(d0) + x2, cos(d3) * r3 * sin(d0) + y2
         z3 = z2 + sin(d3) * r3
-        
+
         return [0, x1, x2, x3], [0, y1, y2, y3], [0, z1, z2, z3]
 
     def set_claws_rotation(self, rot):
@@ -305,16 +316,19 @@ class Arm:
     def pickup(self, sr, target_x, target_y, target_z, claw_rot, smooth=True, steps=40, high=80):
         self.open_claws()
         self.set_claws_rotation(claw_rot)
-        self.goto_and_write(sr, target_x, target_y, target_z + high, smooth=smooth, steps=steps)
-        self.goto_and_write(sr, target_x, target_y, target_z, smooth=smooth, steps=8)
+        self.goto_and_write(sr, target_x, target_y,
+                            target_z + high, smooth=smooth, steps=steps)
+        self.goto_and_write(sr, target_x, target_y,
+                            target_z, smooth=smooth, steps=8)
         time.sleep(0.75)
         self.close_claws()
-        self.goto_and_write(sr, target_x, target_y, target_z + high, smooth=smooth, steps=8)
+        self.goto_and_write(sr, target_x, target_y,
+                            target_z + high, smooth=smooth, steps=8)
 
     def goto_and_write(self, sr, target_x, target_y, target_z, smooth=True, steps=40):
         if smooth:
             x_step, y_step, z_step = (target_x - self.x) / steps, (target_y - self.y) / steps, (
-                    target_z - self.z) / steps
+                target_z - self.z) / steps
             for x, y, z in zip(np.arange(self.x, target_x, x_step),
                                np.arange(self.y, target_y, y_step),
                                np.arange(self.z, target_z, z_step)):
@@ -324,6 +338,9 @@ class Arm:
         else:
             self.goto(target_x, target_y, target_z)
             self.write(sr)
+
+# from https://en.wikipedia.org/wiki/Rodrigues%27_rotation_formula
+
 
 def vec_rot(vec, axis, theta):
     return vec * cos(theta) + np.cross(axis, vec) * sin(theta) + axis * np.dot(axis, vec) * (1 - cos(theta))
@@ -341,24 +358,21 @@ class Simulator:
         points = np.array(list(zip(xs, ys, zs))[1:])
 
         last_line = points[2] - points[1]
-        last_line /= np.linalg.norm(last_line) # unit vector
+        last_line /= np.linalg.norm(last_line)  # unit vector
         normal = np.cross(points[0] - points[1], points[0] - points[2])
 
         rot_axis = np.cross(normal, last_line)
-        rot_axis /= np.linalg.norm(rot_axis)        
-        
-        # open and close rotation
+        rot_axis /= np.linalg.norm(rot_axis)
+
+        # claws rotation (open or close): axis of rotation is the normal plane containing the claws
         _rot1 = np.deg2rad(self.arm.position[5]) / 2
         temp1 = vec_rot(last_line * 20, rot_axis, _rot1)
         temp2 = vec_rot(last_line * 20, rot_axis, - _rot1)
 
-        # fifth servo rotation
+        # fifth servo rotation: axis of rotation is the last piece of arm
         rot = np.deg2rad(self.arm.position[4])
         claw_vec_rot1 = vec_rot(temp1, last_line, rot)
         claw_vec_rot2 = vec_rot(temp2, last_line, rot)
-
-        claw_point1 = points[2] + claw_vec_rot1
-        claw_point2 = points[2] + claw_vec_rot2
 
         self.ax.clear()
         self.ax.set_xlabel('X / mm')
@@ -367,13 +381,18 @@ class Simulator:
         self.ax.set_ylim(ymin, ymax)
         self.ax.set_zlabel('Z / mm')
         self.ax.set_zlim(zmin, zmax)
-        self.ax.plot(xs, ys, zs, linewidth=2.5, marker='*', markersize=8, markerfacecolor='y')
+        self.ax.plot(xs, ys, zs, linewidth=2.5, marker='*',
+                     markersize=8, markerfacecolor='y')
         self.ax.scatter(xs[-1], ys[-1], zs[-1], c='r', s=100, marker='o')
 
-        claw_points = np.array([points[2], claw_point1]).transpose()
-        self.ax.plot(claw_points[0], claw_points[1], claw_points[2], linewidth=2.5, marker='*', markersize=8, markerfacecolor='y')
-        claw_points = np.array([points[2], claw_point2]).transpose()
-        self.ax.plot(claw_points[0], claw_points[1], claw_points[2], linewidth=2.5, marker='*', markersize=8, markerfacecolor='y')
+        claw_points = np.array(
+            [points[2], points[2] + claw_vec_rot1]).transpose()
+        self.ax.plot(claw_points[0], claw_points[1], claw_points[2],
+                     linewidth=2.5, marker='*', markersize=8, markerfacecolor='y')
+        claw_points = np.array(
+            [points[2], points[2] + claw_vec_rot2]).transpose()
+        self.ax.plot(claw_points[0], claw_points[1], claw_points[2],
+                     linewidth=2.5, marker='*', markersize=8, markerfacecolor='y', c="g")
 
 
 if __name__ == "__main__":
@@ -382,7 +401,6 @@ if __name__ == "__main__":
         from protocol import ServoProtocol
 
         sr = ServoProtocol('COM3')
-
 
     def update(n, t):
         global claw_status, arm, simulator
@@ -405,7 +423,6 @@ if __name__ == "__main__":
         if write_serial:
             arm.write(sr)
 
-
     fig = plt.figure()
     ax = Axes3D(fig)
     arm = Arm(93, 87, 110, opt=Arm.minimum_change, implementation=impl)
@@ -417,11 +434,16 @@ if __name__ == "__main__":
     root = Tk()
     root.title('Robotic Arm Control Simulation')
 
-    sx = Scale(root, from_=-200, to_=200, orient=HORIZONTAL, length=600, command=lambda t: update(1, t))
-    sy = Scale(root, from_=0, to_=300, orient=HORIZONTAL, length=600, command=lambda t: update(2, t))
-    sz = Scale(root, from_=-75, to_=200, orient=HORIZONTAL, length=600, command=lambda t: update(3, t))
-    claw_s = Scale(root, from_=0, to_=180, orient=HORIZONTAL, length=600, command=lambda t: update(4, t))
-    Button(root, text="Change Claw Status", command=lambda: update(5, None)).pack()
+    sx = Scale(root, from_=-200, to_=200, orient=HORIZONTAL,
+               length=600, command=lambda t: update(1, t))
+    sy = Scale(root, from_=0, to_=300, orient=HORIZONTAL,
+               length=600, command=lambda t: update(2, t))
+    sz = Scale(root, from_=-75, to_=200, orient=HORIZONTAL,
+               length=600, command=lambda t: update(3, t))
+    claw_s = Scale(root, from_=0, to_=180, orient=HORIZONTAL,
+                   length=600, command=lambda t: update(4, t))
+    Button(root, text="Change Claw Status",
+           command=lambda: update(5, None)).pack()
 
     sx.set(0)
     sy.set(150)
